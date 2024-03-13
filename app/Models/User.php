@@ -12,6 +12,10 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    const ROLE_ADMIN = 1;
+    const ROLE_ORGANIZATION = 2;
+    const ROLE_PARTICIPANT = 3;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +25,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'location',
+        'phone',
+        'role',
     ];
 
     /**
@@ -42,4 +49,23 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    public function setPassword($password): void
+    {
+        $this->attributes['password'] = bcrypt($password);
+    }
+
+    public function campaigns()
+    {
+        return $this->hasMany(Campaign::class);
+    }
+
+    public function participatedCampaigns()
+    {
+        return $this->belongsToMany(Campaign::class, 'campaign_participants');
+    }
+
+    public function bloodRequests()
+    {
+        return $this->hasMany(BloodRequest::class);
+    }
 }
