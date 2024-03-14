@@ -20,6 +20,7 @@ class BloodRequestFactory extends Factory
             'description' => $this->faker->text(),
             'blood_group' => $this->faker->randomElement(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']),
             'location' => $this->faker->city(),
+            'status' => $this->faker->randomElement(['open', 'closed']),
             'user_id' => $this->faker->numberBetween(1, 10),
         ];
     }

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('campaign_participants', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('campaign_id')->constrained('campaigns');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('campaign_id')->constrained('campaigns')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->string('location');
-            $table->foreignId('organization_id')->constrained('users');
+            $table->foreignId('organization_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
