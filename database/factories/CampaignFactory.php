@@ -17,8 +17,8 @@ class CampaignFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->sentence(),
-            'description' => fake()->paragraph(),
+            'name' => fake()->sentence(6, true),
+            'description' => fake()->paragraph(3, true),
             'location' => fake()->city(),
             'start_time' => fake()->dateTime(),
             'end_time' => fake()->dateTime(),

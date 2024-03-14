@@ -50,10 +50,6 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    public function setPassword($password): void
-    {
-        $this->attributes['password'] = bcrypt($password);
-    }
 
     public function campaigns()
     {
