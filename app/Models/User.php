@@ -52,6 +52,16 @@ class User extends Authenticatable implements JWTSubject
         'password' => 'hashed',
     ];
 
+    public function scopeParticipants($query)
+    {
+        return $query->select('id', 'name', 'email', 'location', 'phone', 'blood_group')->where('role', self::ROLE_PARTICIPANT);
+    }
+
+    public function scopeOrganizations($query)
+    {
+        return $query->select('id', 'name', 'email', 'location', 'phone')->where('role', self::ROLE_ORGANIZATION);
+    }
+
     public function campaigns()
     {
         return $this->hasMany(Campaign::class);
