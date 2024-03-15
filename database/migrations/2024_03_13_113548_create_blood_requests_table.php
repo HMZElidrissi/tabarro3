@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('description');
             $table->enum('blood_group', ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']);
-            $table->string('location');
+            $table->string('city');
             $table->enum('status', ['open', 'closed'])->default('open');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();

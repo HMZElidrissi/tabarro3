@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('location')->nullable();
+            $table->string('city')->nullable();
             $table->string('phone')->nullable();
+            $table->enum('blood_group', ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'])->nullable();
             $table->integer('role')->default(3);
             $table->rememberToken();
             $table->timestamps();

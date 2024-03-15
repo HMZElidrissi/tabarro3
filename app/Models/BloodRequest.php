@@ -11,7 +11,8 @@ class BloodRequest extends Model
 
     protected $fillable = [
         'blood_group',
-        'location',
+        'city',
+        'status',
         'user_id',
     ];
 
