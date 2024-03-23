@@ -26,7 +26,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
-        'location',
+        'city',
         'phone',
         'role',
         'blood_group',
@@ -54,12 +54,12 @@ class User extends Authenticatable implements JWTSubject
 
     public function scopeParticipants($query)
     {
-        return $query->select('id', 'name', 'email', 'location', 'phone', 'blood_group')->where('role', self::ROLE_PARTICIPANT);
+        return $query->select('id', 'name', 'email', 'city', 'phone', 'blood_group')->where('role', self::ROLE_PARTICIPANT);
     }
 
     public function scopeOrganizations($query)
     {
-        return $query->select('id', 'name', 'email', 'location', 'phone')->where('role', self::ROLE_ORGANIZATION);
+        return $query->select('id', 'name', 'email', 'city', 'phone')->where('role', self::ROLE_ORGANIZATION);
     }
 
     public function campaigns()
