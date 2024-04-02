@@ -22,8 +22,8 @@ class UpdateParticipantRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $this->user->id],
+            'name' => ['string', 'max:255'],
+            'email' => ['string', 'email', 'max:255', 'unique:users,email,' . $this->participant->id],
             'city' => ['string', 'max:255'],
             'phone' => ['string', 'max:255'],
             'blood_group' => ['in:A+,A-,B+,B-,AB+,AB-,O+,O-'],

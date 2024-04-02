@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCampaignRequest extends FormRequest
+class StoreBloodRequestRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +22,9 @@ class UpdateCampaignRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['string', 'max:255'],
-            'description' => ['string'],
-            'start_time' => ['date'],
-            'end_time' => ['date'],
-            'location' => ['string'],
-            'organization_id' => ['exists:users,id'],
+            'description' => 'required|string',
+            'blood_group' => 'required|in:A+,A-,B+,B-,AB+,AB-,O+,O-',
+            'city' => 'required|string',
         ];
     }
 }

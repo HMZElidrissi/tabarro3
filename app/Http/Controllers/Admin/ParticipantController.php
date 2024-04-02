@@ -31,7 +31,7 @@ class ParticipantController extends Controller
      */
     public function show(User $participant)
     {
-        //
+        return response()->json($participant);
     }
 
     /**

@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\ParticipantController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('register', 'register');
@@ -31,23 +32,23 @@ Route::controller(AuthController::class)->group(function () {
 Route::controller(CampaignController::class)->group(function () {
     Route::get('campaigns', 'index');
     Route::post('campaigns', 'store');
-    Route::get('campaigns/{id}', 'show');
-    Route::put('campaigns/{id}', 'update');
-    Route::delete('campaigns/{id}', 'destroy');
+    Route::get('campaigns/{campaign}', 'show');
+    Route::put('campaigns/{campaign}', 'update');
+    Route::delete('campaigns/{campaign}', 'destroy');
 });
 
 Route::controller(OrganizationController::class)->group(function () {
     Route::get('organizations', 'index');
     Route::post('organizations', 'store');
-    Route::get('organizations/{id}', 'show');
-    Route::put('organizations/{id}', 'update');
-    Route::delete('organizations/{id}', 'destroy');
+    Route::get('organizations/{organization}', 'show');
+    Route::put('organizations/{organization}', 'update');
+    Route::delete('organizations/{organization}', 'destroy');
 });
 
 Route::controller(ParticipantController::class)->group(function () {
     Route::get('participants', 'index');
     Route::post('participants', 'store');
-    Route::get('participants/{id}', 'show');
-    Route::put('participants/{id}', 'update');
-    Route::delete('participants/{id}', 'destroy');
+    Route::get('participants/{participant}', 'show');
+    Route::put('participants/{participant}', 'update');
+    Route::delete('participants/{participant}', 'destroy');
 });
