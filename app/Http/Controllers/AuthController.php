@@ -9,6 +9,32 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    public function register(Request $request)
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'city' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:255'],
+            'blood_group' => ['in:A+,A-,B+,B-,AB+,AB-,O+,O-'],
+        ]);
+
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'city' => $request->city,
+            'phone' => $request->phone,
+            'blood_group' => $request->blood_group,
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User created successfully'
+        ]);
+    }
+
     public function login(Request $request)
     {
         $request->validate([
@@ -31,36 +57,6 @@ class AuthController extends Controller
             'user' => $user,
             'token' => $token,
         ]);
-        // ])->header('Authorization', 'Bearer ' . $token);
-    }
-
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
-            'city' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string', 'max:255'],
-            'blood_group' => ['in:A+,A-,B+,B-,AB+,AB-,O+,O-'],
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        $token = Auth::login($user);
-        return response()->json([
-            'status' => 'success',
-            'message' => 'User created successfully',
-            'user' => $user,
-            'authorisation' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ]
-        ]);
     }
 
     public function logout()
@@ -77,10 +73,7 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'success',
             'user' => Auth::user(),
-            'authorisation' => [
-                'token' => Auth::refresh(),
-                'type' => 'bearer',
-            ]
+            'token' => Auth::refresh(),
         ]);
     }
 }
