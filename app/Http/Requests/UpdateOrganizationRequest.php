@@ -11,7 +11,7 @@ class UpdateOrganizationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,7 @@ class UpdateOrganizationRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $this->user->id],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$this->organization->id],
             'city' => ['string', 'max:255'],
             'phone' => ['string', 'max:255'],
         ];
