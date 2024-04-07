@@ -27,7 +27,6 @@ class StoreCampaignRequest extends FormRequest
             'start_time' => ['required', 'date'],
             'end_time' => ['required', 'date'],
             'location' => ['required', 'string'],
-            'organization_id' => ['required', 'exists:users,id'],
         ];
     }
 }

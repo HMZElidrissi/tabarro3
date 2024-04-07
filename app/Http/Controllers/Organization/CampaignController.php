@@ -30,15 +30,6 @@ class CampaignController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Campaign $campaign)
-    {
-        $campaign->load('organization', 'participants');
-        return response()->json($campaign);
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(UpdateCampaignRequest $request, Campaign $campaign)
@@ -55,5 +46,14 @@ class CampaignController extends Controller
     {
         $campaign->delete();
         return response()->json(null, 204);
+    }
+
+    /**
+     * Display the participants of the specified campaign.
+     */
+    public function participants(Campaign $campaign)
+    {
+        $participants = $campaign->participants;
+        return response()->json($participants);
     }
 }

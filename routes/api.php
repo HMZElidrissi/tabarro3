@@ -32,7 +32,7 @@ Route::controller(AuthController::class)->group(function () {
 Route::controller(CampaignController::class)->group(function () {
     Route::get('campaigns', 'index');
     Route::post('campaigns', 'store');
-    Route::get('campaigns/{campaign}', 'show');
+    Route::get('campaigns/{campaign}/participants', 'participants');
     Route::put('campaigns/{campaign}', 'update');
     Route::delete('campaigns/{campaign}', 'destroy');
 });
