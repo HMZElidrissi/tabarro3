@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\OrganizationController;
 use App\Http\Controllers\Admin\ParticipantController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Organization\CampaignController;
 use App\Http\Controllers\Participant\BloodRequestController;
 use Illuminate\Http\Request;
@@ -60,4 +61,8 @@ Route::controller(BloodRequestController::class)->group(function () {
     Route::put('blood-requests/{bloodRequest}/open', 'open');
     Route::put('blood-requests/{bloodRequest}/close', 'close');
     Route::delete('blood-requests/{bloodRequest}', 'destroy');
+});
+
+Route::controller(HomeController::class)->group(function () {
+    Route::get('blood-requests/all', 'bloodRequests');
 });
