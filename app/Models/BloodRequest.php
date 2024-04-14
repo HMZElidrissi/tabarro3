@@ -10,6 +10,7 @@ class BloodRequest extends Model
     use HasFactory;
 
     protected $fillable = [
+        'description',
         'blood_group',
         'city',
         'status',

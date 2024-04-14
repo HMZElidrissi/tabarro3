@@ -1,11 +1,12 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Organization\CampaignController;
 use App\Http\Controllers\Admin\OrganizationController;
 use App\Http\Controllers\Admin\ParticipantController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Organization\CampaignController;
+use App\Http\Controllers\Participant\BloodRequestController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,4 +52,12 @@ Route::controller(ParticipantController::class)->group(function () {
     Route::get('participants/{participant}', 'show');
     Route::put('participants/{participant}', 'update');
     Route::delete('participants/{participant}', 'destroy');
+});
+
+Route::controller(BloodRequestController::class)->group(function () {
+    Route::get('blood-requests', 'index');
+    Route::post('blood-requests', 'store');
+    Route::put('blood-requests/{bloodRequest}/open', 'open');
+    Route::put('blood-requests/{bloodRequest}/close', 'close');
+    Route::delete('blood-requests/{bloodRequest}', 'destroy');
 });

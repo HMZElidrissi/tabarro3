@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Participant;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBloodRequestRequest;
-use App\Http\Requests\UpdateBloodRequestRequest;
 use App\Models\BloodRequest;
 
 class BloodRequestController extends Controller
@@ -30,19 +29,20 @@ class BloodRequestController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(BloodRequest $bloodRequest)
-    {
-        //
-    }
-
-    /**
      * Close the specified blood request.
      */
     public function close(BloodRequest $bloodRequest)
     {
         $bloodRequest->update(['status' => 'closed']);
+        return response()->json($bloodRequest);
+    }
+
+    /**
+     * Open the specified blood request.
+     */
+    public function open(BloodRequest $bloodRequest)
+    {
+        $bloodRequest->update(['status' => 'open']);
         return response()->json($bloodRequest);
     }
 
