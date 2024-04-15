@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Organization\CampaignController;
 use App\Http\Controllers\Participant\BloodRequestController;
+use App\Http\Controllers\Participant\CampaignController as ParticipantCampaignController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -65,4 +66,10 @@ Route::controller(BloodRequestController::class)->group(function () {
 
 Route::controller(HomeController::class)->group(function () {
     Route::get('blood-requests/all', 'bloodRequests');
+    Route::get('campaigns/all', 'campaigns');
+    Route::get('campaigns/search', 'searchCampaigns');
+});
+
+Route::controller(ParticipantCampaignController::class)->group(function () {
+    Route::post('campaigns/{campaign}/participate', 'participate');
 });
