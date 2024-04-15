@@ -29,9 +29,9 @@ class HomeController extends Controller
     public function searchCampaigns(Request $request)
     {
         $campaigns = Campaign::with('organization')
-            ->where('name', 'like', "%$request->search%")
-            ->orWhere('location', 'like', "%$request->search%")
-            ->orWhere('description', 'like', "%$request->search%")
+            ->where('name', 'ILIKE', "%$request->search%")
+            ->orWhere('location', 'ILIKE', "%$request->search%")
+            ->orWhere('description', 'ILIKE', "%$request->search%")
             ->get();
         if (auth()->user()) {
             $campaigns = $campaigns->map(function ($campaign) {
