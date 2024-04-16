@@ -68,6 +68,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('blood-requests/all', 'bloodRequests');
     Route::get('campaigns/all', 'campaigns');
     Route::get('campaigns/search', 'searchCampaigns');
+    Route::get('stats', 'stats');
 });
 
 Route::controller(ParticipantCampaignController::class)->group(function () {
