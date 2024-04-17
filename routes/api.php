@@ -28,8 +28,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('register', 'register');
-    Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
+    Route::post('logout', 'logout');
+    Route::post('password/email', 'sendPasswordResetLink');
+    Route::post('password/reset', 'resetPassword');
 });
 
 Route::controller(CampaignController::class)->group(function () {
