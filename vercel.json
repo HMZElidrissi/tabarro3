@@ -1,0 +1,42 @@
+{
+    "version": 2,
+    "framework": null,
+    "functions": {
+        "public/index.php": {
+            "runtime": "vercel-php@0.7.0"
+        }
+    },
+    "github": {
+        "enabled": false
+    },
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/public/index.php"
+        }
+    ],
+    "env": {
+        "APP_ENV": "production",
+        "APP_DEBUG": "false",
+        "APP_URL": "https://laracel-app.vercel.app",
+        "APP_CONFIG_CACHE": "/tmp/config.php",
+        "APP_EVENTS_CACHE": "/tmp/events.php",
+        "APP_PACKAGES_CACHE": "/tmp/packages.php",
+        "APP_ROUTES_CACHE": "/tmp/routes.php",
+        "APP_SERVICES_CACHE": "/tmp/services.php",
+        "VIEW_COMPILED_PATH": "/tmp",
+        "CACHE_DRIVER": "array",
+        "LOG_CHANNEL": "stderr",
+        "SESSION_DRIVER": "cookie",
+        "LOG_DEPRECATIONS_CHANNEL": "null",
+        "LOG_LEVEL": "debug",
+        "BROADCAST_DRIVER": "log",
+        "FILESYSTEM_DISK": "local",
+        "QUEUE_CONNECTION": "sync",
+        "SESSION_LIFETIME": "120",
+        "MEMCACHED_HOST": "127.0.0.1",
+        "REDIS_HOST": "127.0.0.1",
+        "REDIS_PASSWORD": "null",
+        "REDIS_PORT": "6379"
+    }
+}
