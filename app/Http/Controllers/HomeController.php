@@ -21,9 +21,11 @@ class HomeController extends Controller
     public function searchCampaigns(Request $request)
     {
         $campaigns = Campaign::with('organization')
-            ->where('name', 'ILIKE', "%$request->search%")
-            ->orWhere('location', 'ILIKE', "%$request->search%")
-            ->orWhere('description', 'ILIKE', "%$request->search%")
+            ->where('end_time', '>', now())
+            ->where(function ($query) use ($request) {
+                $query->where('location', 'ILIKE', "%$request->search%")
+                    ->orWhere('description', 'ILIKE', "%$request->search%");
+            })
             ->orderBy('start_time', 'desc')
             ->get();
         if (auth()->user()) {
