@@ -14,7 +14,9 @@ class OrganizationController extends Controller
      */
     public function index()
     {
-        $organisations = User::organizations()->get();
+        $organisations = User::organizations()
+            ->orderBy('id', 'desc')
+            ->get();
         return response()->json($organisations);
     }
 

@@ -13,7 +13,9 @@ class BloodRequestController extends Controller
      */
     public function index()
     {
-        $bloodRequests = BloodRequest::where('user_id', auth()->user()->id)->get();
+        $bloodRequests = BloodRequest::where('user_id', auth()->user()->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
         return response()->json($bloodRequests);
     }
 

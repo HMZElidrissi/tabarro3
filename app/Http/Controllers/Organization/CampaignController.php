@@ -14,7 +14,7 @@ class CampaignController extends Controller
      */
     public function index()
     {
-        $campaigns = Campaign::where('organization_id', auth()->user()->id)->get();
+        $campaigns = Campaign::where('organization_id', auth()->user()->id)->orderBy('id', 'desc')->get();
         return response()->json($campaigns);
     }
 

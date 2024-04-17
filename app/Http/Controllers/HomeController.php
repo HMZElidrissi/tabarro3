@@ -11,7 +11,10 @@ class HomeController extends Controller
 {
     public function bloodRequests()
     {
-        $bloodRequests = BloodRequest::with('user')->where('status', 'open')->get();
+        $bloodRequests = BloodRequest::with('user')
+            ->where('status', 'open')
+            ->orderBy('created_at', 'desc')
+            ->get();
         return response()->json($bloodRequests);
     }
 
@@ -21,6 +24,7 @@ class HomeController extends Controller
             ->where('name', 'ILIKE', "%$request->search%")
             ->orWhere('location', 'ILIKE', "%$request->search%")
             ->orWhere('description', 'ILIKE', "%$request->search%")
+            ->orderBy('start_time', 'desc')
             ->get();
         if (auth()->user()) {
             $campaigns = $campaigns->map(function ($campaign) {
@@ -68,7 +72,10 @@ class HomeController extends Controller
 
     public function campaigns()
     {
-        $campaigns = Campaign::with('organization')->get();
+        $campaigns = Campaign::with('organization')
+            ->where('end_time', '>', now())
+            ->orderBy('start_time', 'desc')
+            ->get();
         if (auth()->user()) {
             $campaigns = $campaigns->map(function ($campaign) {
                 $campaign->is_participating = $campaign->participants->contains(auth()->user());
