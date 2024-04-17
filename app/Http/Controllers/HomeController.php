@@ -45,16 +45,23 @@ class HomeController extends Controller
         } else {
             $userId = auth()->user()->id;
             $numberOfCampaigns = Campaign::where('organization_id', $userId)->count();
-            $campaignWithMostParticipants = Campaign::where('organization_id',
-                $userId)->withCount('participants')->orderBy('participants_count',
-                'desc')->first()->name;
-            $campaignWithLeastParticipants = Campaign::where('organization_id',
-                $userId)->withCount('participants')->orderBy('participants_count',
-                'asc')->first()->name;
+            $campaignWithMostParticipants = Campaign::where('organization_id', $userId)
+                ->withCount('participants')
+                ->orderBy('participants_count', 'desc')
+                ->first();
+
+            $campaignWithMostParticipantsName = $campaignWithMostParticipants ? $campaignWithMostParticipants->name : 'No campaign found';
+
+            $campaignWithLeastParticipants = Campaign::where('organization_id', $userId)
+                ->withCount('participants')
+                ->orderBy('participants_count', 'asc')
+                ->first();
+
+            $campaignWithLeastParticipantsName = $campaignWithLeastParticipants ? $campaignWithLeastParticipants->name : 'No campaign found';
             return response()->json([
                 'campaigns' => $numberOfCampaigns,
-                'most_participated_campaign' => $campaignWithMostParticipants,
-                'least_participated_campaign' => $campaignWithLeastParticipants,
+                'most_participated_campaign' => $campaignWithMostParticipantsName,
+                'least_participated_campaign' => $campaignWithLeastParticipantsName,
             ]);
         }
     }
