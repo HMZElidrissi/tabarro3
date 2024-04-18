@@ -6,9 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCampaignRequest;
 use App\Http\Requests\UpdateCampaignRequest;
 use App\Models\Campaign;
+use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
 
 class CampaignController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            abort_if(Gate::denies('manage-campaigns'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+            return $next($request);
+        });
+    }
+
     /**
      * Display a listing of the resource.
      */

@@ -6,6 +6,8 @@ use App\Models\BloodRequest;
 use App\Models\Campaign;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
 
 class HomeController extends Controller
 {
@@ -39,6 +41,7 @@ class HomeController extends Controller
 
     public function stats()
     {
+        abort_if(Gate::denies('view-statistics'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         if (auth()->user()->role === User::ROLE_ADMIN) {
             $numberOfParticipants = User::participants()->count();
             $numberOfOrganizations = User::organizations()->count();

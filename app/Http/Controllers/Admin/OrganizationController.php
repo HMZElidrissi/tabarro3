@@ -6,9 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrganizationRequest;
 use App\Http\Requests\UpdateOrganizationRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
 
 class OrganizationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            abort_if(Gate::denies('manage-organizations'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+            return $next($request);
+        });
+    }
+
     /**
      * Display a listing of the resource.
      */

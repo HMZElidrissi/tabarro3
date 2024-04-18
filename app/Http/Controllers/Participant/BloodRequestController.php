@@ -5,9 +5,19 @@ namespace App\Http\Controllers\Participant;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBloodRequestRequest;
 use App\Models\BloodRequest;
+use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
 
 class BloodRequestController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            abort_if(Gate::denies('manage-blood-requests'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+            return $next($request);
+        });
+    }
+
     /**
      * Display a listing of the resource.
      */
