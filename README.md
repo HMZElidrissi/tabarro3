@@ -24,7 +24,7 @@ git clone https://github.com/HMZElidrissi/tabaro3.git
 - Install dependencies
 
 ```bash
-cd Evento-API
+cd tabaro3
 composer install
 ```
 
@@ -38,6 +38,12 @@ cp .env.example .env
 
 ```bash
 php artisan key:generate
+```
+
+- Generate a JWT secret
+
+```bash
+php artisan jwt:secret
 ```
 
 - Run the migrations
