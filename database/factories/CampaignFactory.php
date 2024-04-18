@@ -20,7 +20,7 @@ class CampaignFactory extends Factory
     {
         return [
             'name' => fake()->sentence(6, true),
-            'description' => fake()->paragraph(3, true),
+            'description' => fake()->paragraph(2, true),
             'location' => fake()->city(),
             'start_time' => Carbon::create(2024, 4, 25, 0, 0, 0)->addDays($this->faker->numberBetween(1, 365)),
             'end_time' => Carbon::create(2024, 4, 26, 0, 0, 0)->addDays($this->faker->numberBetween(20, 30)),
