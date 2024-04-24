@@ -79,7 +79,7 @@ class HomeController extends Controller
     {
         $campaigns = Campaign::with('organization')
             ->where('end_time', '>', now())
-            ->orderBy('start_time', 'desc')
+            ->orderBy('start_time', 'asc')
             ->get();
         if (auth()->user()) {
             $campaigns = $campaigns->map(function ($campaign) {
