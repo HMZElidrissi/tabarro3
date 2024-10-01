@@ -36,14 +36,14 @@ class UrgentBloodRequestNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
-            ->subject('Urgent Blood Need Alert')
-            ->line('An urgent blood donation is needed.')
-            ->line('Description: '.$this->bloodRequest->description)
-            ->line('Blood Group: '.$this->bloodRequest->blood_group)
-            ->line('City: '.$this->bloodRequest->city)
-            ->action('View Details', url('/requests'))
-            ->line('Thank you for your attention to this urgent need!');
+         return (new MailMessage)
+             ->subject('Alerte de besoin de sang urgent')
+             ->line('Une donation de sang urgente est nécessaire.')
+             ->line('Description: '.$this->bloodRequest->description)
+             ->line('Groupe sanguin: '.$this->bloodRequest->blood_group)
+             ->line('Ville: '.$this->bloodRequest->city)
+             ->action('Voir les détails', url('/requests'))
+             ->line('Merci pour votre attention à ce besoin urgent!');
     }
 
     /**

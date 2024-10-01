@@ -39,11 +39,13 @@ class CampaignParticipationNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
-            ->line('A new participant has registered for your campaign.')
-            ->line('Participant Name: '.$this->participant->name)
-            ->line('Campaign Name: '.$this->campaign->name)
-            ->action('View Campaign', url('/organization/campaigns'));
+
+         return (new MailMessage)
+             ->line('Un nouveau participant s\'est inscrit à votre campagne.')
+             ->line('Nom du participant: '.$this->participant->name)
+             ->line('Nom de la campagne: '.$this->campaign->name)
+             ->action('Voir la campagne', url('/organization/campaigns'));
+
     }
 
     /**

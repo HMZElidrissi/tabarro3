@@ -18,7 +18,7 @@
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "false",
-        "APP_URL": "https://laracel-app.vercel.app",
+        "APP_URL": "https://tabarro3.ma",
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
         "APP_PACKAGES_CACHE": "/tmp/packages.php",
@@ -39,13 +39,5 @@
         "REDIS_HOST": "127.0.0.1",
         "REDIS_PASSWORD": "null",
         "REDIS_PORT": "6379",
-        "MAIL_MAILER": "smtp",
-        "MAIL_HOST": "mailpit",
-        "MAIL_PORT": "1025",
-        "MAIL_USERNAME": "null",
-        "MAIL_PASSWORD": "null",
-        "MAIL_ENCRYPTION": "null",
-        "MAIL_FROM_ADDRESS": "hello@example.com",
-        "MAIL_FROM_NAME": "Laracel-mailer"
     }
 }
