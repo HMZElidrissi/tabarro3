@@ -13,8 +13,7 @@ return [
     |
     */
 
-    'default' => env('QUEUE_CONNECTION', 'sync'),
-
+    'default' => env('QUEUE_CONNECTION', 'database'),
     /*
     |--------------------------------------------------------------------------
     | Queue Connections
@@ -39,7 +38,6 @@ return [
             'table' => 'jobs',
             'queue' => 'default',
             'retry_after' => 90,
-            'after_commit' => false,
         ],
 
         'beanstalkd' => [

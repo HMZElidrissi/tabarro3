@@ -86,6 +86,11 @@ class HomeController extends Controller
                 $campaign->is_participating = $campaign->participants->contains(auth()->user());
                 return $campaign;
             });
+        } else {
+            $campaigns = $campaigns->map(function ($campaign) {
+                $campaign->is_participating = false;
+                return $campaign;
+            });
         }
         return response()->json($campaigns);
     }

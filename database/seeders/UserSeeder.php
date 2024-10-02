@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             'city' => 'Casablanca',
             'phone' => '0612378678',
             'blood_group' => 'AB+',
-            'role' => 2,
+            'role' => 1,
         ]);
         User::create([
             'name' => 'Rotaract Les Mérinides',
@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
             'city' => 'Fes',
             'phone' => '0670345678',
             'blood_group' => 'O+',
-            'role' => 3,
+            'role' => 2,
         ]);
         User::create([
             'name' => 'Amine Ismaili',
@@ -37,7 +37,7 @@ class UserSeeder extends Seeder
             'city' => 'Casablanca',
             'phone' => '0612345678',
             'blood_group' => 'A+',
-            'role' => 1,
+            'role' => 3,
         ]);
         User::factory()
             ->count(7)

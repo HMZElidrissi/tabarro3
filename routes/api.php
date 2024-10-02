@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Organization\CampaignController;
 use App\Http\Controllers\Participant\BloodRequestController;
 use App\Http\Controllers\Participant\CampaignController as ParticipantCampaignController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -70,3 +71,8 @@ Route::controller(HomeController::class)->group(function () {
 Route::controller(ParticipantCampaignController::class)->group(function () {
     Route::post('campaigns/{campaign}/participate', 'participate');
 })->middleware('auth:api');
+
+Route::get('/process-queue', function () {
+    Artisan::call('queue:work', ['--stop-when-empty' => true]);
+    return response()->json(['message' => 'Queue processed']);
+});

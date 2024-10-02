@@ -14,9 +14,9 @@ class CampaignController extends Controller
     {
         abort_if(Gate::denies('participate-in-campaign'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $campaign->participants()->attach(auth()->user()->id);
-        $participant = auth()->user();
-        $organization = $campaign->organization;
-        $organization->notify(new CampaignParticipationNotification($participant, $campaign));
+        // $participant = auth()->user();
+        // $organization = $campaign->organization;
+        // $organization->notify((new CampaignParticipationNotification($participant, $campaign))->delay(now()->addSeconds(10)));
         return response()->json($campaign);
     }
 }

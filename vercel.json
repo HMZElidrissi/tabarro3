@@ -39,5 +39,11 @@
         "REDIS_HOST": "127.0.0.1",
         "REDIS_PASSWORD": "null",
         "REDIS_PORT": "6379"
-    }
+    },
+    "crons": [
+        {
+            "path": "/backend/process-queue",
+            "schedule": "*/30 * * * *"
+        }
+    ]
 }
