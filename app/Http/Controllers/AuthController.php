@@ -19,7 +19,6 @@ class AuthController extends Controller
             'password' => ['required', 'string', 'min:6', 'confirmed'],
             'city' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:255'],
-            'blood_group' => ['in:A+,A-,B+,B-,AB+,AB-,O+,O-'],
         ]);
 
         User::create([
