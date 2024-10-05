@@ -27,17 +27,17 @@ class UserSeeder extends Seeder
             'password' => bcrypt('password'),
             'city' => 'Fes',
             'phone' => '0670345678',
-            'blood_group' => 'O+',
+            'blood_group' => null,
             'role' => 2,
         ]);
         User::create([
             'name' => 'Amine Ismaili',
-            'email' => 'amine@amine.com',
+            'email' => 'amineismaili57@gmail.com',
             'password' => bcrypt('password'),
-            'city' => 'Casablanca',
+            'city' => 'Fes',
             'phone' => '0612345678',
             'blood_group' => 'A+',
-            'role' => 3,
+            'role' => 1,
         ]);
         User::factory()
             ->count(7)
