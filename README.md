@@ -9,7 +9,7 @@ tabarro3 is a platform aimed at raising awareness about blood donation in Morocc
 - Laravel 10 (RESTful API)
 - Next.js + TypeScript
 - Tailwind CSS
-- PostgreSQL
+- Supabase (PostgreSQL)
 
 ## Getting Started
 
