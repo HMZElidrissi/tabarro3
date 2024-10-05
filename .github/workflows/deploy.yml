@@ -27,8 +27,8 @@ jobs:
         run: |
           php artisan optimize
           php artisan queue:table
-#          php artisan migrate:fresh --force
-#          php artisan db:seed --force
+          php artisan migrate:fresh --force
+          php artisan db:seed --force
         env:
           APP_ENV: production
           DB_CONNECTION: pgsql
