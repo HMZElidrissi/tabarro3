@@ -59,3 +59,7 @@ php artisan serve
 ## Frontend
 
 > The Frontend is available at [tabarro3 Frontend](https://github.com/HMZElidrissi/tabarro3-frontend)
+
+## Future Tasks
+
+- [ ] Integrate WhatsApp API for notifications
