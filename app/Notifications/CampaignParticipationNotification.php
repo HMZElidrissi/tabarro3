@@ -41,11 +41,14 @@ class CampaignParticipationNotification extends Notification
     {
 
          return (new MailMessage)
-             ->line('Un nouveau participant s\'est inscrit à votre campagne.')
-             ->line('Nom du participant: '.$this->participant->name)
-             ->line('Nom de la campagne: '.$this->campaign->name)
-             ->action('Voir la campagne', url('/organization/campaigns'));
-
+             ->subject('Un nouveau participant s\'est inscrit à votre campagne.')
+             ->view(
+                 'campaign-participation',
+                 [
+                     'participant' => $this->participant,
+                     'campaign' => $this->campaign
+                 ]
+             );
     }
 
     /**
