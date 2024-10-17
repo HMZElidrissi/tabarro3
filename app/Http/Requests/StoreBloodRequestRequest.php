@@ -24,8 +24,8 @@ class StoreBloodRequestRequest extends FormRequest
         return [
             'description' => 'required|string',
             'city' => 'required|string',
-            'location' => 'string',
-            'phone' => 'string',
+            'location' => 'nullable|string',
+            'phone' => 'nullable|string',
         ];
     }
 }
