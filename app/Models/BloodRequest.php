@@ -13,6 +13,8 @@ class BloodRequest extends Model
         'description',
         'blood_group',
         'city',
+        'location',
+        'phone',
         'status',
         'user_id',
     ];

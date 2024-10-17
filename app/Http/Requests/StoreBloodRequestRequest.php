@@ -23,8 +23,9 @@ class StoreBloodRequestRequest extends FormRequest
     {
         return [
             'description' => 'required|string',
-            'blood_group' => 'required|in:A+,A-,B+,B-,AB+,AB-,O+,O-',
             'city' => 'required|string',
+            'location' => 'required|string',
+            'phone' => 'required|string',
         ];
     }
 }

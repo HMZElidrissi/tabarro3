@@ -26,7 +26,6 @@ class UpdateParticipantRequest extends FormRequest
             'email' => ['string', 'email', 'max:255', 'unique:users,email,' . $this->participant->id],
             'city' => ['string', 'max:255'],
             'phone' => ['string', 'max:255'],
-            'blood_group' => ['in:A+,A-,B+,B-,AB+,AB-,O+,O-'],
         ];
     }
 }
