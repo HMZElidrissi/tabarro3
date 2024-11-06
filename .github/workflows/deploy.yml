@@ -26,13 +26,18 @@ jobs:
       - name: Run Artisan commands
         run: |
           php artisan optimize
-#          php artisan queue:table
+          php artisan queue:table
 #          php artisan migrate:fresh --force
 #          php artisan db:seed --force
         env:
+#          APP_ENV: production
+#          DB_CONNECTION: pgsql
+#          DB_URL: ${{ secrets.DB_URL }}
           APP_ENV: production
-          DB_CONNECTION: pgsql
-          DB_URL: ${{ secrets.DB_URL }}
+          DB_CONNECTION: d1
+          CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_D1_DATABASE_ID: ${{ secrets.CLOUDFLARE_D1_DATABASE_ID }}
 
       - name: Deploy to Vercel
         run: vercel deploy --force --prod --token=${{ secrets.VERCEL_LARACEL_TOKEN }}
