@@ -7,6 +7,7 @@ use App\Models\Campaign;
 use App\Notifications\CampaignParticipationNotification;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Notification;
 
 class CampaignController extends Controller
 {
@@ -17,6 +18,13 @@ class CampaignController extends Controller
         // $participant = auth()->user();
         // $organization = $campaign->organization;
         // $organization->notify((new CampaignParticipationNotification($participant, $campaign))->delay(now()->addSeconds(10)));
+        // Queue the notification
+        dispatch(function () use ($campaign) {
+            $participant = auth()->user();
+            $organization = $campaign->organization;
+
+            Notification::send($organization, new CampaignParticipationNotification($participant, $campaign));
+        })->onQueue('notifications');
         return response()->json($campaign);
     }
 }
