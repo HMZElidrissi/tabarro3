@@ -26,6 +26,7 @@ class StoreBloodRequestRequest extends FormRequest
             'city' => 'required|string',
             'location' => 'nullable|string',
             'phone' => 'nullable|string',
+            'blood_group' => 'nullable|string|in:A+,A-,B+,B-,AB+,AB-,O+,O-',
         ];
     }
 }
