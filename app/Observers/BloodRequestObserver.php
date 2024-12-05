@@ -15,12 +15,12 @@ class BloodRequestObserver
     public function created(BloodRequest $bloodRequest): void
     {
         $blood_group = $bloodRequest->blood_group;
-        $city = $bloodRequest->city;
+        $city = strtolower($bloodRequest->city);
 
         // Queue the job to send notifications
         dispatch(function () use ($blood_group, $city, $bloodRequest) {
             $users = User::where('blood_group', $blood_group)
-                ->where('city', $city)
+                ->whereRaw('LOWER(city) LIKE ?', ['%' . $city . '%'])
                 ->get();
 
             Notification::send($users, new UrgentBloodRequestNotification($bloodRequest));
