@@ -23,7 +23,7 @@ class StoreCampaignRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string'],
+            'description' => ['required', 'text'],
             'start_time' => ['required', 'date'],
             'end_time' => ['required', 'date'],
             'location' => ['required', 'string'],

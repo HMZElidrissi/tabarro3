@@ -23,7 +23,7 @@ class UpdateCampaignRequest extends FormRequest
     {
         return [
             'name' => ['string', 'max:255'],
-            'description' => ['string'],
+            'description' => ['text'],
             'start_time' => ['date'],
             'end_time' => ['date'],
             'location' => ['string'],
