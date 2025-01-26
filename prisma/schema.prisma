@@ -1,0 +1,171 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  ADMIN
+  ORGANIZATION
+  PARTICIPANT
+}
+
+enum BloodGroup {
+  A_POSITIVE
+  A_NEGATIVE
+  B_POSITIVE
+  B_NEGATIVE
+  O_POSITIVE
+  O_NEGATIVE
+  AB_POSITIVE
+  AB_NEGATIVE
+  UNKNOWN
+}
+
+model Region {
+  id     Int    @id
+  name   String
+  cities City[]
+
+  @@map("regions")
+}
+
+model City {
+  id            Int            @id
+  name          String
+  regionId      Int            @map("region_id")
+  region        Region         @relation(fields: [regionId], references: [id])
+  users         User[]
+  bloodRequests BloodRequest[]
+  campaigns     Campaign[]
+
+  @@map("cities")
+}
+
+enum ActivityType {
+  SIGN_IN
+  SIGN_UP
+  SIGN_OUT
+  UPDATE_PASSWORD
+  DELETE_ACCOUNT
+  UPDATE_ACCOUNT
+  ACCEPT_INVITATION
+  PASSWORD_RESET_REQUEST
+  PASSWORD_RESET_COMPLETE
+}
+
+model User {
+  id              String          @id @default(uuid())
+  name            String?         @db.VarChar(100)
+  email           String          @unique @db.VarChar(255)
+  passwordHash    String          @map("password_hash")
+  role            Role            @default(PARTICIPANT)
+  phone           String?         @db.VarChar(20)
+  bloodGroup      BloodGroup?     @map("blood_group")
+  city            City?           @relation(fields: [cityId], references: [id])
+  cityId          Int?            @map("city_id")
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @default(now()) @map("updated_at")
+  deletedAt       DateTime?       @map("deleted_at")
+  activities      ActivityLog[]
+  invitationsSent Invitation[]    @relation("InvitedBy")
+  PasswordReset   PasswordReset[]
+
+  campaigns             Campaign[]            @relation("OrganizedCampaigns")
+  participatedCampaigns CampaignParticipant[]
+  bloodRequests         BloodRequest[]
+
+  @@map("users")
+}
+
+model ActivityLog {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  action    String
+  timestamp DateTime @default(now())
+  ipAddress String?  @map("ip_address") @db.VarChar(45)
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("activity_logs")
+}
+
+model Invitation {
+  id        String   @id @default(uuid())
+  email     String   @db.VarChar(255)
+  role      Role     @default(ORGANIZATION)
+  invitedBy String   @map("invited_by")
+  invitedAt DateTime @default(now()) @map("invited_at")
+  expiresAt DateTime @map("expires_at")
+  status    String   @default("pending") @db.VarChar(20)
+  token     String   @unique // For secure invitation links
+  inviter   User     @relation("InvitedBy", fields: [invitedBy], references: [id])
+
+  @@map("invitations")
+}
+
+model PasswordReset {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  token     String   @unique
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  used      Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("password_resets")
+}
+
+model Campaign {
+  id             Int      @id @default(autoincrement())
+  name           String
+  description    String   @db.Text
+  cityId         Int      @map("city_id")
+  city           City     @relation(fields: [cityId], references: [id])
+  location       String
+  startTime      DateTime @map("start_time")
+  endTime        DateTime @map("end_time")
+  organizationId String   @map("organization_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  organization User                  @relation("OrganizedCampaigns", fields: [organizationId], references: [id])
+  participants CampaignParticipant[]
+
+  @@map("campaigns")
+}
+
+model CampaignParticipant {
+  id         Int      @id @default(autoincrement())
+  campaignId Int      @map("campaign_id")
+  userId     String   @map("user_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  campaign Campaign @relation(fields: [campaignId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+
+  @@unique([campaignId, userId])
+  @@map("campaign_participants")
+}
+
+model BloodRequest {
+  id          Int        @id @default(autoincrement())
+  description String     @db.Text
+  bloodGroup  BloodGroup @map("blood_group")
+  city        City       @relation(fields: [cityId], references: [id])
+  cityId      Int        @map("city_id")
+  location    String
+  phone       String
+  status      String
+  userId      String     @map("user_id")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("blood_requests")
+}
