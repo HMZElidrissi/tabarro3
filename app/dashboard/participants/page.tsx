@@ -4,7 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import ParticipantsClient from '@/components/participants/participants-client';
-import { BloodGroup } from '@/types/enums';
+import { BloodGroup, Role } from '@/types/enums';
+import { getUser } from '@/auth/session';
+import { redirect } from 'next/navigation';
 
 export default async function ParticipantsPage({
     searchParams,
@@ -15,6 +17,11 @@ export default async function ParticipantsPage({
         bloodGroup: BloodGroup;
     }>;
 }) {
+    const user = await getUser();
+    if (user?.role !== Role.ADMIN) {
+        redirect('/dashboard');
+    }
+
     const { page, search, bloodGroup } = await searchParams;
     const currentPage = page || 1;
     const currentSearch = search ?? undefined;
