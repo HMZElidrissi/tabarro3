@@ -1,112 +1,132 @@
 import type { Metadata } from 'next';
-import { Nunito } from 'next/font/google';
+import { Nunito, Tajawal } from 'next/font/google';
 import './globals.css';
 import { Organization, WithContext } from 'schema-dts';
 import Script from 'next/script';
+import { cookies } from 'next/headers';
+import { getDictionary } from '@/i18n/get-dictionary';
+import { i18n } from '@/i18n/i18n-config';
+import { cn } from '@/lib/utils';
 
 const nunitoFont = Nunito({
     subsets: ['latin'],
     display: 'swap',
 });
 
+const tajawal = Tajawal({
+    weight: ['200', '300', '400', '500', '700', '800', '900'],
+    variable: '--font-tajawal',
+    subsets: ['arabic'],
+    display: 'swap',
+    fallback: ['nunito', 'sans-serif'],
+});
+
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://tabarro3.ma';
 
-export const metadata: Metadata = {
-    metadataBase: new URL(baseUrl),
-    title: {
-        default: 'Tabarro3 | Blood Donation Awareness Platform',
-        template: '%s | Tabarro3',
-    },
-    description:
-        'Join our community of blood donors and save lives. Find blood donation campaigns, connect with donors, and respond to urgent blood requests in your area.',
-    openGraph: {
-        title: 'Tabarro3 - Blood Donation Awareness Platform',
-        description:
-            'Connect with blood donors, organize donation campaigns, and help save lives. Join our growing community of blood donors across the region.',
-        siteName: 'Tabarro3',
-        url: baseUrl,
-        images: [
-            {
-                url: `${baseUrl}/og-image.png`,
-                width: 1200,
-                height: 630,
-                alt: 'Tabarro3 - Blood Donation Community Platform',
-            },
-        ],
-        locale: 'en_US',
-        type: 'website',
-    },
-    twitter: {
-        card: 'summary_large_image',
-        title: 'Tabarro3 - Blood Donation Awareness Platform',
-        description:
-            'Connect with blood donors, organize donation campaigns, and help save lives. Join our growing community of blood donors.',
-        images: [
-            {
-                url: `${baseUrl}/og-image.png`,
-                width: 1200,
-                height: 630,
-                alt: 'Tabarro3 - Blood Donation Community Platform',
-            },
-        ],
-    },
-    robots: {
-        index: true,
-        follow: true,
-        googleBot: {
+export async function generateMetadata(): Promise<Metadata> {
+    const cookieStore = await cookies();
+    const locale = cookieStore.get('NEXT_LOCALE')?.value || i18n.defaultLocale;
+    const dictionary = await getDictionary();
+
+    return {
+        metadataBase: new URL(baseUrl),
+        title: {
+            default: dictionary.metadata.defaultTitle,
+            template: dictionary.metadata.template,
+        },
+        description: dictionary.metadata.description,
+        openGraph: {
+            title: dictionary.metadata.ogTitle,
+            description: dictionary.metadata.ogDescription,
+            siteName: 'tabarro3',
+            url: baseUrl,
+            images: [
+                {
+                    url: `${baseUrl}/og-image.jpg`,
+                    width: 1200,
+                    height: 630,
+                    alt: dictionary.metadata.ogImageAlt,
+                },
+            ],
+            locale: locale === 'ar' ? 'ar_MA' : 'en_US',
+            type: 'website',
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: dictionary.metadata.twitterTitle,
+            description: dictionary.metadata.twitterDescription,
+            images: [
+                {
+                    url: `${baseUrl}/og-image.png`,
+                    width: 1200,
+                    height: 630,
+                    alt: dictionary.metadata.twitterImageAlt,
+                },
+            ],
+        },
+        robots: {
             index: true,
             follow: true,
-            'max-video-preview': -1,
-            'max-image-preview': 'large',
-            'max-snippet': -1,
+            googleBot: {
+                index: true,
+                follow: true,
+                'max-video-preview': -1,
+                'max-image-preview': 'large',
+                'max-snippet': -1,
+            },
         },
-    },
-    keywords: [
-        'blood donation',
-        'blood donors',
-        'donation campaigns',
-        'blood requests',
-        'emergency blood',
-        'volunteer donors',
-        'blood donation awareness',
-    ],
-};
-
-const jsonLd: WithContext<Organization> = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'Tabarro3',
-    description:
-        'A community platform connecting blood donors with those in need, organizing blood donation campaigns, and raising awareness about the importance of blood donation.',
-    url: baseUrl,
-    logo: `${baseUrl}/logo.png`,
-    contactPoint: {
-        '@type': 'ContactPoint',
-        contactType: 'customer service',
-        availableLanguage: ['English', 'Arabic'],
-    },
-    sameAs: [
-        'https://www.facebook.com/tabarro3',
-        'https://www.twitter.com/tabarro3',
-        'https://www.instagram.com/rotaract_les_merinides/',
-    ],
-};
-
-interface RootLayoutProps {
-    children: React.ReactNode;
-    params: { lang: string }; // For i18n support based on middleware
+        keywords: dictionary.metadata.keywords,
+    };
 }
 
-export default function RootLayout({
+const getJsonLd = async (): Promise<WithContext<Organization>> => {
+    const dictionary = await getDictionary();
+
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: 'Tabarro3',
+        description: dictionary.metadata.jsonLdDescription,
+        url: baseUrl,
+        logo: `${baseUrl}/logo.png`,
+        contactPoint: {
+            '@type': 'ContactPoint',
+            contactType: 'customer service',
+            availableLanguage: ['English', 'Arabic'],
+        },
+        sameAs: [
+            'https://www.linkedin.com/company/rotaract-les-merinides/',
+            'https://www.instagram.com/rotaract_les_merinides/',
+        ],
+    };
+};
+
+export default async function RootLayout({
     children,
-    params: { lang },
-}: Readonly<RootLayoutProps>) {
+}: {
+    children: React.ReactNode;
+}) {
+    const cookieStore = await cookies();
+    const locale = cookieStore.get('NEXT_LOCALE')?.value || i18n.defaultLocale;
+    const isRTL = locale === 'ar';
+    const jsonLd = await getJsonLd();
+
     return (
         <html
-            lang={lang}
+            lang={locale}
+            dir={isRTL ? 'rtl' : 'ltr'}
             suppressHydrationWarning
-            className={nunitoFont.className}
-            dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+            className={cn(
+                'antialiased transition-all',
+                isRTL
+                    ? [
+                          tajawal.className,
+                          tajawal.variable,
+                          'text-right',
+                          // '[&_*]:text-right',
+                      ]
+                    : [nunitoFont.className, 'text-left'],
+            )}>
             <head>
                 <link rel="canonical" href={baseUrl} />
                 <Script
