@@ -13,6 +13,7 @@ const guestRoutes = [
 
 export async function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname;
+    const isDashboard = pathname.startsWith('/dashboard');
 
     // Handle authentication
     const sessionCookie = request.cookies.get('session')?.value;
@@ -23,30 +24,40 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/dashboard', request.url));
     }
 
-    if (!isAuthenticated && pathname.startsWith('/dashboard')) {
+    if (!isAuthenticated && isDashboard) {
         return NextResponse.redirect(new URL('/sign-in', request.url));
     }
 
-    // Handle i18n
-    let locale = request.cookies.get('NEXT_LOCALE')?.value;
-
-    // If no cookie exists or invalid locale, set to default
-    if (!isValidLocale(locale)) {
-        locale = i18n.defaultLocale;
-    }
-
-    // Create response with authentication result
+    // Create response
     const response = NextResponse.next();
 
-    // Set or update locale cookie
-    response.cookies.set('NEXT_LOCALE', locale, {
-        path: '/',
-        sameSite: 'strict',
-        secure: process.env.NODE_ENV === 'production',
-    });
+    // If accessing dashboard, force set locale to 'fr'
+    if (isDashboard) {
+        response.cookies.set('NEXT_LOCALE', 'fr', {
+            path: '/',
+            sameSite: 'strict',
+            secure: process.env.NODE_ENV === 'production',
+        });
+        response.headers.set('x-locale', 'fr');
+    } else {
+        // Handle i18n for non-dashboard routes
+        let locale = request.cookies.get('NEXT_LOCALE')?.value;
 
-    // Add locale to headers for server components
-    response.headers.set('x-locale', locale);
+        // If no cookie exists or invalid locale, set to default
+        if (!isValidLocale(locale)) {
+            locale = i18n.defaultLocale;
+        }
+
+        // Set or update locale cookie
+        response.cookies.set('NEXT_LOCALE', locale, {
+            path: '/',
+            sameSite: 'strict',
+            secure: process.env.NODE_ENV === 'production',
+        });
+
+        // Add locale to headers for server components
+        response.headers.set('x-locale', locale);
+    }
 
     return response;
 }
