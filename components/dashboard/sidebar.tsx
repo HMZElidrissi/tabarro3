@@ -33,11 +33,13 @@ import { useRouter } from 'next/navigation';
 import { useUser } from '@/auth';
 import { signOut } from '@/actions/sign-out';
 import Link from 'next/link';
+import { Role } from '@/types/enums';
 
 export function DashboardSidebar() {
     const router = useRouter();
     const { user } = useUser();
     const [isLoading, setIsLoading] = useState(false);
+    const role = user?.role;
 
     const handleLogout = async () => {
         try {
@@ -54,6 +56,15 @@ export function DashboardSidebar() {
     if (!user) {
         return null;
     }
+
+    const filterNavigationItems = (items: NavigationItem[]) => {
+        return items.filter(item => {
+            if (!item.roles) {
+                return true;
+            }
+            return item.roles.includes(role as Role);
+        });
+    };
 
     // Get user initials for avatar fallback
     const initials = user.name
@@ -81,7 +92,7 @@ export function DashboardSidebar() {
             <SidebarContent className="px-2">
                 <SidebarMenu>
                     <div className="space-y-3">
-                        {mainNavigation.map(item => (
+                        {filterNavigationItems(mainNavigation).map(item => (
                             <NavItem
                                 key={item.title}
                                 item={item as NavigationItem}
