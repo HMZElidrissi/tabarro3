@@ -25,12 +25,14 @@ interface CampaignCardProps {
     campaign: Campaign;
     authenticated: boolean;
     userId?: string;
+    dict: any;
 }
 
 export function CampaignCard({
     campaign,
     authenticated,
     userId,
+    dict,
 }: CampaignCardProps) {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
@@ -86,10 +88,10 @@ export function CampaignCard({
                                 )}>
                                 {cn(
                                     isOngoing
-                                        ? 'Ongoing'
+                                        ? dict.Ongoing
                                         : isUpcoming
-                                          ? 'Upcoming'
-                                          : 'Past',
+                                          ? dict.Upcoming
+                                          : dict.Past,
                                 )}
                             </Badge>
                         </div>
@@ -140,8 +142,8 @@ export function CampaignCard({
                         onClick={handleParticipate}
                         disabled={isParticipating || isLoading}>
                         {isParticipating
-                            ? 'Already Participating'
-                            : 'Participate'}
+                            ? dict.Participating
+                            : dict.Participate}
                     </Button>
                 </CardFooter>
             </Card>
@@ -150,14 +152,13 @@ export function CampaignCard({
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>
-                            Confirm Participation
+                            {dict.Confirm_Participation}
                         </AlertDialogTitle>
                         <AlertDialogDescription>
-                            Are you sure you want to participate in the campaign
-                            "{campaign.name}"? By confirming, you agree to
-                            attend the blood donation campaign at{' '}
-                            {campaign.location} from{' '}
-                            {format(campaign.startTime, 'dd-MM-yyyy')} to{' '}
+                            {dict.confirming_description}"{campaign.name}"?{' '}
+                            {dict.confirming_description_2} {campaign.location}{' '}
+                            {dict.from}{' '}
+                            {format(campaign.startTime, 'dd-MM-yyyy')} {dict.to}{' '}
                             {format(campaign.endTime, 'dd-MM-yyyy')}.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
@@ -166,7 +167,7 @@ export function CampaignCard({
                         <AlertDialogAction
                             onClick={confirmParticipation}
                             disabled={isLoading}>
-                            {isLoading ? 'Confirming...' : 'Confirm'}
+                            {isLoading ? dict.Confirming : dict.Confirm}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

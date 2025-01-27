@@ -10,9 +10,10 @@ import { getBloodGroupLabel } from '@/config/blood-group';
 
 interface BloodRequestCardProps {
     request: BloodRequest;
+    dict: any;
 }
 
-export function BloodRequestCard({ request }: BloodRequestCardProps) {
+export function BloodRequestCard({ request, dict }: BloodRequestCardProps) {
     return (
         <Card className="h-full flex flex-col shadow-md hover:shadow-lg">
             <CardContent className="flex-1 pt-6">
@@ -74,7 +75,7 @@ export function BloodRequestCard({ request }: BloodRequestCardProps) {
                             href={`tel:${request.phone}`}
                             className="flex items-center gap-2">
                             <Phone className="h-4 w-4" />
-                            Contact
+                            {dict.Contact}
                         </a>
                     </Button>
                 </CardFooter>
