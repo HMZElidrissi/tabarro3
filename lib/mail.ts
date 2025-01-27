@@ -31,7 +31,7 @@ export async function sendPasswordResetEmail(email: string, token: string) {
         await transporter.sendMail({
             from: FROM_EMAIL,
             to: email,
-            subject: 'Reset your password',
+            subject: 'Réinitialisation de votre mot de passe',
             text: emailText,
             html: emailHtml,
         });
@@ -49,7 +49,7 @@ export async function sendPasswordChangedEmail(email: string) {
         await transporter.sendMail({
             from: FROM_EMAIL,
             to: email,
-            subject: 'Your password has been changed',
+            subject: 'Votre mot de passe a été changé',
             text: emailText,
             html: emailHtml,
         });
