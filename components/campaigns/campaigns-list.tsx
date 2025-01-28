@@ -50,6 +50,7 @@ export default function CampaignsList({
                                     campaign={campaign}
                                     authenticated={authenticated}
                                     userId={userId}
+                                    dict={dict}
                                 />
                             ))}
                         </div>
@@ -68,6 +69,7 @@ export default function CampaignsList({
                                     campaign={campaign}
                                     authenticated={authenticated}
                                     userId={userId}
+                                    dict={dict}
                                 />
                             ))}
                         </div>
@@ -86,6 +88,7 @@ export default function CampaignsList({
                                     campaign={campaign}
                                     authenticated={authenticated}
                                     userId={userId}
+                                    dict={dict}
                                 />
                             ))}
                         </div>
