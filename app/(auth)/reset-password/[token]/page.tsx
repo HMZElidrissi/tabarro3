@@ -5,7 +5,7 @@ import { AuthCardSkeleton } from '@/components/loading/auth-card-skeleton';
 import { Suspense } from 'react';
 
 export const metadata = {
-    title: 'Softwareinstore | Reset password',
+    title: 'Reset password',
 };
 
 export default async function ResetPasswordPage({

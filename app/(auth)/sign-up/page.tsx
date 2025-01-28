@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import { AuthCardSkeleton } from '@/components/loading/auth-card-skeleton';
 
 export const metadata = {
-    title: 'Softwareinstore | Sign in',
+    title: 'Sign up',
 };
 
 export default function SignUpPage() {

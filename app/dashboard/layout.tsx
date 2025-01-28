@@ -8,6 +8,10 @@ import { Toaster } from '@/components/ui/toaster';
 import { redirect } from 'next/navigation';
 import { Role } from '@/types/enums';
 
+export const metadata = {
+    title: 'Dashboard',
+};
+
 export default async function DashboardLayout({
     children,
 }: {

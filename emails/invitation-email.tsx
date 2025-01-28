@@ -46,7 +46,7 @@ export const InvitationEmail = ({ inviteLink }: InvitationEmailProps) => (
                 <Container className="bg-white rounded-lg shadow-lg mx-auto p-8 max-w-[580px]">
                     <Section className="text-center mb-8">
                         <Img
-                            src={`${process.env.NEXT_PUBLIC_BASE_URL}/logo.svg`}
+                            src="https://www.tabarro3.ma/logo.png"
                             width="140"
                             height="auto"
                             alt="tabarro3"

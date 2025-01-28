@@ -3,13 +3,13 @@ import { AuthCardSkeleton } from '@/components/loading/auth-card-skeleton';
 import { Suspense } from 'react';
 
 export const metadata = {
-    title: 'Softwareinstore | Forgot password',
+    title: 'Forgot password',
 };
 
 export default function ForgotPasswordPage() {
     return (
         <Suspense fallback={<AuthCardSkeleton />}>
-            <ForgotPasswordForm />;
+            <ForgotPasswordForm />
         </Suspense>
     );
 }

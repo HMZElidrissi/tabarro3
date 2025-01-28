@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import { AuthCardSkeleton } from '@/components/loading/auth-card-skeleton';
 
 export const metadata = {
-    title: 'Softwareinstore | Accept Invitation',
+    title: 'Accept Invitation',
 };
 
 export default function AcceptInvitationPage() {
