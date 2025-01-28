@@ -26,6 +26,7 @@ interface CampaignCardProps {
     authenticated: boolean;
     userId?: string;
     dict: any;
+    passed?: boolean;
 }
 
 export function CampaignCard({
@@ -33,6 +34,7 @@ export function CampaignCard({
     authenticated,
     userId,
     dict,
+    passed = false,
 }: CampaignCardProps) {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
@@ -115,8 +117,8 @@ export function CampaignCard({
                                 <Calendar className="h-4 w-4" />
                                 {format(
                                     campaign.startTime,
-                                    'dd-MM-yyyy',
-                                )} - {format(campaign.endTime, 'dd-MM-yyyy')}
+                                    'dd/MM/yyyy',
+                                )} - {format(campaign.endTime, 'dd/MM/yyyy')}
                             </div>
 
                             {campaign.organization?.phone && (
@@ -136,15 +138,17 @@ export function CampaignCard({
                 </CardContent>
 
                 <CardFooter className="pt-6">
-                    <Button
-                        variant={isParticipating ? 'outline' : 'brand'}
-                        className="w-full"
-                        onClick={handleParticipate}
-                        disabled={isParticipating || isLoading}>
-                        {isParticipating
-                            ? dict.Participating
-                            : dict.Participate}
-                    </Button>
+                    {!passed && (
+                        <Button
+                            variant={isParticipating ? 'outline' : 'brand'}
+                            className="w-full"
+                            onClick={handleParticipate}
+                            disabled={isParticipating || isLoading}>
+                            {isParticipating
+                                ? dict.Participating
+                                : dict.Participate}
+                        </Button>
+                    )}
                 </CardFooter>
             </Card>
 

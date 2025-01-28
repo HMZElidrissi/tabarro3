@@ -89,6 +89,7 @@ export default function CampaignsList({
                                     authenticated={authenticated}
                                     userId={userId}
                                     dict={dict}
+                                    passed={true}
                                 />
                             ))}
                         </div>
