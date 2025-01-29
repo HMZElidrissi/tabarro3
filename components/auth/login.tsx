@@ -19,7 +19,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { REGIONS_AND_CITIES } from '@/config/locations';
-import { bloodGroups } from '@/config/blood-group';
+import { bloodGroups, getBloodGroupLabel } from '@/config/blood-group';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
 type LoginProps = {
@@ -213,7 +213,10 @@ export function Login({ mode = 'signin', dict }: LoginProps) {
                                             <SelectItem
                                                 key={group.value}
                                                 value={group.value}>
-                                                {group.label}
+                                                {getBloodGroupLabel(
+                                                    group.value,
+                                                    dict,
+                                                )}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>

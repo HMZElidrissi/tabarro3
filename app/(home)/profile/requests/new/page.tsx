@@ -2,9 +2,19 @@ import { getUser } from '@/auth/session';
 import { redirect } from 'next/navigation';
 import { Role } from '@/types/enums';
 import { RequestForm } from '@/components/profile/request-form';
+import { Metadata } from 'next';
+import { getDictionary } from '@/i18n/get-dictionary';
+
+export async function generateMetadata(): Promise<Metadata> {
+    const dict = await getDictionary();
+    return {
+        title: dict.common.profile,
+    };
+}
 
 export default async function NewRequestPage() {
     const user = await getUser();
+    const dict = await getDictionary();
 
     if (!user) {
         redirect('/sign-in');
@@ -25,7 +35,7 @@ export default async function NewRequestPage() {
                         Create a new blood request
                     </p>
                 </div>
-                <RequestForm userId={user.id} mode="add" />
+                <RequestForm userId={user.id} mode="add" dict={dict} />
             </div>
         </div>
     );

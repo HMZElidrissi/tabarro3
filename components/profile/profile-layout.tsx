@@ -15,9 +15,14 @@ import { User2, Droplets } from 'lucide-react';
 interface ProfileLayoutProps {
     user: User;
     bloodRequests: BloodRequest[];
+    dict: any;
 }
 
-export function ProfileLayout({ user, bloodRequests }: ProfileLayoutProps) {
+export function ProfileLayout({
+    user,
+    bloodRequests,
+    dict,
+}: ProfileLayoutProps) {
     const searchParams = useSearchParams();
     const [activeTab, setActiveTab] = useState(
         searchParams.get('tab') || 'requests',
@@ -39,10 +44,10 @@ export function ProfileLayout({ user, bloodRequests }: ProfileLayoutProps) {
             )}>
             <div className="space-y-0.5">
                 <h2 className="text-2xl font-bold tracking-tight">
-                    Profile Settings
+                    {dict.profile.title}
                 </h2>
                 <p className="text-muted-foreground">
-                    Manage your personal information and blood donation requests
+                    {dict.profile.description}
                 </p>
             </div>
             <Separator />
@@ -56,13 +61,13 @@ export function ProfileLayout({ user, bloodRequests }: ProfileLayoutProps) {
                         value="requests"
                         className="flex gap-2 items-center">
                         <Droplets className="h-6 w-6" />
-                        Blood Requests
+                        {dict.profile.tabs.bloodRequests}
                     </TabsTrigger>
                     <TabsTrigger
                         value="account"
                         className="flex gap-2 items-center">
                         <User2 className="h-6 w-6" />
-                        Account Information
+                        {dict.profile.tabs.accountInfo}
                     </TabsTrigger>
                 </TabsList>
 
@@ -78,6 +83,7 @@ export function ProfileLayout({ user, bloodRequests }: ProfileLayoutProps) {
                         <Card className="p-6">
                             <BloodRequestsGrid
                                 initialRequests={bloodRequests}
+                                dict={dict}
                             />
                         </Card>
                     </TabsContent>
@@ -90,7 +96,7 @@ export function ProfileLayout({ user, bloodRequests }: ProfileLayoutProps) {
                                 : 'opacity-0 translate-y-4',
                         )}>
                         <Card>
-                            <AccountForm user={user} />
+                            <AccountForm user={user} dict={dict} />
                         </Card>
                     </TabsContent>
                 </div>

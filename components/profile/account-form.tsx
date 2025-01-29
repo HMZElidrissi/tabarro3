@@ -21,15 +21,16 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { bloodGroups } from '@/config/blood-group';
+import { bloodGroups, getBloodGroupLabel } from '@/config/blood-group';
 import { REGIONS_AND_CITIES } from '@/config/locations';
 import { ActionState } from '@/auth/middleware';
 
 interface AccountFormProps {
     user: User;
+    dict: any;
 }
 
-export function AccountForm({ user }: AccountFormProps) {
+export function AccountForm({ user, dict }: AccountFormProps) {
     const { toast } = useToast();
     const formRef = useRef<HTMLFormElement>(null);
     const [selectedRegion, setSelectedRegion] = useState<string>(
@@ -46,26 +47,26 @@ export function AccountForm({ user }: AccountFormProps) {
     useEffect(() => {
         if (state.success) {
             toast({
-                title: 'Success',
+                title: dict.common.success,
                 description: state.success,
             });
         } else if (state.error) {
             toast({
-                title: 'Error',
+                title: dict.common.error,
                 description: state.error,
                 variant: 'destructive',
             });
         }
-    }, [state, toast]);
+    }, [state, toast, dict]);
 
     return (
         <form ref={formRef} action={formAction}>
             <CardHeader>
-                <CardTitle>Account Information</CardTitle>
+                <CardTitle>{dict.profile.accountInformation}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
                 <div className="space-y-2">
-                    <Label htmlFor="name">Name</Label>
+                    <Label htmlFor="name">{dict.forms.labels.fullName}</Label>
                     <Input
                         id="name"
                         name="name"
@@ -75,7 +76,7 @@ export function AccountForm({ user }: AccountFormProps) {
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">{dict.forms.labels.email}</Label>
                     <Input
                         id="email"
                         name="email"
@@ -86,7 +87,9 @@ export function AccountForm({ user }: AccountFormProps) {
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="phone">Phone</Label>
+                    <Label htmlFor="phone">
+                        {dict.forms.labels.phoneNumber}
+                    </Label>
                     <Input
                         id="phone"
                         name="phone"
@@ -96,19 +99,25 @@ export function AccountForm({ user }: AccountFormProps) {
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="bloodGroup">Blood Group</Label>
+                    <Label htmlFor="bloodGroup">
+                        {dict.forms.labels.bloodGroup}
+                    </Label>
                     <Select
                         name="bloodGroup"
                         defaultValue={user.bloodGroup || ''}>
                         <SelectTrigger>
-                            <SelectValue placeholder="Select blood group" />
+                            <SelectValue
+                                placeholder={
+                                    dict.forms.placeholders.selectBloodGroup
+                                }
+                            />
                         </SelectTrigger>
                         <SelectContent>
                             {bloodGroups.map(group => (
                                 <SelectItem
                                     key={group.value}
                                     value={group.value}>
-                                    {group.label}
+                                    {getBloodGroupLabel(group.value, dict)}
                                 </SelectItem>
                             ))}
                         </SelectContent>
@@ -116,14 +125,18 @@ export function AccountForm({ user }: AccountFormProps) {
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="region">Region</Label>
+                    <Label htmlFor="region">{dict.forms.labels.region}</Label>
                     <Select
                         value={selectedRegion}
                         onValueChange={(value: string) => {
                             setSelectedRegion(value);
                         }}>
                         <SelectTrigger>
-                            <SelectValue placeholder="Select region" />
+                            <SelectValue
+                                placeholder={
+                                    dict.forms.placeholders.selectRegion
+                                }
+                            />
                         </SelectTrigger>
                         <SelectContent>
                             {REGIONS_AND_CITIES.map(region => (
@@ -138,12 +151,14 @@ export function AccountForm({ user }: AccountFormProps) {
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="cityId">City</Label>
+                    <Label htmlFor="cityId">{dict.forms.labels.city}</Label>
                     <Select
                         name="cityId"
                         defaultValue={user.cityId?.toString()}>
                         <SelectTrigger>
-                            <SelectValue placeholder="Select city" />
+                            <SelectValue
+                                placeholder={dict.forms.placeholders.selectCity}
+                            />
                         </SelectTrigger>
                         <SelectContent>
                             {selectedRegion &&
@@ -165,10 +180,10 @@ export function AccountForm({ user }: AccountFormProps) {
                     {pending ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Saving...
+                            {dict.common.saving}
                         </>
                     ) : (
-                        'Save Changes'
+                        dict.common.saveChanges
                     )}
                 </Button>
             </CardFooter>

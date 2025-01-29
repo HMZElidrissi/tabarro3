@@ -5,6 +5,14 @@ import { Campaign } from '@/types/campaign';
 import { getUser } from '@/auth/session';
 import { CardsLoading } from '@/components/loading/cards-loading';
 import { getDictionary } from '@/i18n/get-dictionary';
+import { Metadata } from 'next';
+
+export async function generateMetadata(): Promise<Metadata> {
+    const dict = await getDictionary();
+    return {
+        title: dict.New_Campaigns,
+    };
+}
 
 export default async function CampaignsPage() {
     const campaigns = await getCampaigns();

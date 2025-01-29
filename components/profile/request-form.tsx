@@ -15,7 +15,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { bloodGroups } from '@/config/blood-group';
+import { bloodGroups, getBloodGroupLabel } from '@/config/blood-group';
 import { REGIONS_AND_CITIES } from '@/config/locations';
 import { ActionState } from '@/auth/middleware';
 import { createBloodRequest, updateBloodRequest } from '@/actions/profile';
@@ -26,9 +26,10 @@ interface RequestFormProps {
     request?: BloodRequest | null;
     userId: string;
     mode: 'add' | 'edit';
+    dict: any;
 }
 
-export function RequestForm({ request, userId, mode }: RequestFormProps) {
+export function RequestForm({ request, userId, mode, dict }: RequestFormProps) {
     const router = useRouter();
     const { toast } = useToast();
     const [selectedRegion, setSelectedRegion] = useState<string>(
@@ -43,19 +44,19 @@ export function RequestForm({ request, userId, mode }: RequestFormProps) {
     useEffect(() => {
         if (state.success) {
             toast({
-                title: 'Success',
+                title: dict.common.success,
                 description: state.success,
             });
             router.push('/profile?tab=requests');
             router.refresh();
         } else if (state.error) {
             toast({
-                title: 'Error',
+                title: dict.common.error,
                 description: state.error,
                 variant: 'destructive',
             });
         }
-    }, [state, toast, router]);
+    }, [state, toast, router, dict]);
 
     return (
         <Card className="p-6">
@@ -66,19 +67,25 @@ export function RequestForm({ request, userId, mode }: RequestFormProps) {
                 )}
 
                 <div className="space-y-2">
-                    <Label htmlFor="bloodGroup">Blood Group</Label>
+                    <Label htmlFor="bloodGroup">
+                        {dict.forms.labels.bloodGroup}
+                    </Label>
                     <Select
                         name="bloodGroup"
                         defaultValue={request?.bloodGroup || ''}>
                         <SelectTrigger>
-                            <SelectValue placeholder="Select blood group" />
+                            <SelectValue
+                                placeholder={
+                                    dict.forms.placeholders.selectBloodGroup
+                                }
+                            />
                         </SelectTrigger>
                         <SelectContent>
                             {bloodGroups.map(group => (
                                 <SelectItem
                                     key={group.value}
                                     value={group.value}>
-                                    {group.label}
+                                    {getBloodGroupLabel(group.value, dict)}
                                 </SelectItem>
                             ))}
                         </SelectContent>
@@ -86,12 +93,16 @@ export function RequestForm({ request, userId, mode }: RequestFormProps) {
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="region">Region</Label>
+                    <Label htmlFor="region">{dict.forms.labels.region}</Label>
                     <Select
                         value={selectedRegion}
                         onValueChange={setSelectedRegion}>
                         <SelectTrigger>
-                            <SelectValue placeholder="Select region" />
+                            <SelectValue
+                                placeholder={
+                                    dict.forms.placeholders.selectRegion
+                                }
+                            />
                         </SelectTrigger>
                         <SelectContent>
                             {REGIONS_AND_CITIES.map(region => (
@@ -106,12 +117,14 @@ export function RequestForm({ request, userId, mode }: RequestFormProps) {
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="cityId">City</Label>
+                    <Label htmlFor="cityId">{dict.forms.labels.city}</Label>
                     <Select
                         name="cityId"
                         defaultValue={request?.cityId?.toString() || ''}>
                         <SelectTrigger>
-                            <SelectValue placeholder="Select city" />
+                            <SelectValue
+                                placeholder={dict.forms.placeholders.selectCity}
+                            />
                         </SelectTrigger>
                         <SelectContent>
                             {selectedRegion &&
@@ -129,54 +142,68 @@ export function RequestForm({ request, userId, mode }: RequestFormProps) {
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="location">Location Details</Label>
+                    <Label htmlFor="location">
+                        {dict.forms.labels.location}
+                    </Label>
                     <Input
                         id="location"
                         name="location"
                         defaultValue={request?.location || ''}
                         required
-                        placeholder="Enter specific location"
+                        placeholder={dict.forms.placeholders.enterLocation}
                     />
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="phone">Contact Phone</Label>
+                    <Label htmlFor="phone">
+                        {dict.forms.labels.phoneNumber}
+                    </Label>
                     <Input
                         id="phone"
                         name="phone"
                         defaultValue={request?.phone || ''}
                         required
-                        placeholder="Enter contact phone number"
+                        placeholder={dict.forms.placeholders.enterPhoneNumber}
                     />
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="description">Description</Label>
+                    <Label htmlFor="description">
+                        {dict.forms.labels.description}
+                    </Label>
                     <Textarea
                         id="description"
                         name="description"
                         defaultValue={request?.description || ''}
-                        placeholder="Enter additional details or requirements"
+                        placeholder={dict.forms.placeholders.enterDescription}
                         rows={3}
                     />
                 </div>
 
                 {mode === 'edit' && (
                     <div className="space-y-2">
-                        <Label htmlFor="status">Status</Label>
+                        <Label htmlFor="status">
+                            {dict.forms.labels.status}
+                        </Label>
                         <Select
                             name="status"
                             defaultValue={request?.status || 'active'}>
                             <SelectTrigger>
-                                <SelectValue placeholder="Select status" />
+                                <SelectValue
+                                    placeholder={
+                                        dict.forms.placeholders.selectStatus
+                                    }
+                                />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="active">Active</SelectItem>
+                                <SelectItem value="active">
+                                    {dict.bloodRequests.status.active}
+                                </SelectItem>
                                 <SelectItem value="fulfilled">
-                                    Fulfilled
+                                    {dict.bloodRequests.status.fulfilled}
                                 </SelectItem>
                                 <SelectItem value="cancelled">
-                                    Cancelled
+                                    {dict.bloodRequests.status.cancelled}
                                 </SelectItem>
                             </SelectContent>
                         </Select>
@@ -188,18 +215,20 @@ export function RequestForm({ request, userId, mode }: RequestFormProps) {
                         type="button"
                         variant="outline"
                         onClick={() => router.back()}>
-                        Cancel
+                        {dict.common.cancel}
                     </Button>
                     <Button type="submit" disabled={pending}>
                         {pending ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                {mode === 'add' ? 'Creating...' : 'Updating...'}
+                                {mode === 'add'
+                                    ? dict.bloodRequests.creating
+                                    : dict.bloodRequests.updating}
                             </>
                         ) : mode === 'add' ? (
-                            'Create Request'
+                            dict.bloodRequests.createRequest
                         ) : (
-                            'Update Request'
+                            dict.bloodRequests.updateRequest
                         )}
                     </Button>
                 </div>

@@ -12,7 +12,14 @@
     "loading": "Loading...",
     "createAccount": "Create account",
     "error": "Error",
-    "success": "Success"
+    "success": "Success",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleting": "Deleting...",
+    "contact": "Contact",
+    "saving": "Saving...",
+    "saveChanges": "Save Changes",
+    "unknown": "Unknown"
   },
   "footer": {
     "tabarro3": "tabarro3",
@@ -114,6 +121,7 @@
   "Blood_Requests_Description": "Current blood donation requests in your area",
   "auth": {
     "invitation": {
+      "title": "Accept Invitation",
       "invalid": "Invalid Invitation",
       "invalidMessage": "This invitation link is invalid or has expired.",
       "returnToSignIn": "Return to sign in",
@@ -138,6 +146,7 @@
       "consentMessage": "By signing up, you agree to our Terms of Service, Privacy Policy, and consent to receive notifications about blood donation needs in your region. Your information will be used to match you with local donation opportunities."
     },
     "resetPassword": {
+      "title": "Reset Password",
       "newPassword": "New Password",
       "enterNewPassword": "Enter your new password",
       "confirmPassword": "Confirm Password",
@@ -161,7 +170,10 @@
       "phoneNumber": "Phone Number",
       "bloodGroup": "Blood Group",
       "region": "Region",
-      "city": "City"
+      "city": "City",
+      "location": "Location Details",
+      "description": "Description",
+      "status": "Status"
     },
     "placeholders": {
       "enterFullName": "Enter your full name",
@@ -170,11 +182,42 @@
       "enterPhoneNumber": "Enter your phone number",
       "selectBloodGroup": "Select your blood group",
       "selectRegion": "Select your region",
-      "selectCity": "Select your city"
+      "selectCity": "Select your city",
+      "enterLocation": "Enter specific location",
+      "enterDescription": "Enter additional details or requirements",
+      "selectStatus": "Select status"
     },
     "validation": {
       "passwordRequirements": "Password must be at least 8 characters long"
     }
+  },
+  "profile": {
+    "title": "Profile Settings",
+    "description": "Manage your personal information and blood donation requests",
+    "tabs": {
+      "bloodRequests": "Blood Requests",
+      "accountInfo": "Account Information"
+    }
+  },
+  "bloodRequests": {
+    "myRequests": "My Blood Requests",
+    "newRequest": "New Request",
+    "noRequests": "No blood requests found. Click \"New Request\" to create one.",
+    "status": {
+      "active": "Active",
+      "fulfilled": "Fulfilled",
+      "cancelled": "Cancelled"
+    },
+    "deleteDialog": {
+      "title": "Are you sure?",
+      "description": "This will permanently delete this blood request. This action cannot be undone."
+    },
+    "creating": "Creating...",
+    "updating": "Updating...",
+    "createRequest": "Create Request",
+    "updateRequest": "Update Request",
+    "editRequest": "Edit Blood Request",
+    "editRequestDescription": "Update your blood request details"
   },
   "how_it_works_title": "How It Works",
   "how_it_works_description": "tabarro3 is a platform that connects blood donors with those in need. Here's how it works:",

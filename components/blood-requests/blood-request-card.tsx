@@ -7,6 +7,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { getBloodGroupLabel } from '@/config/blood-group';
+import { getStatusColor } from '@/lib/utils';
 
 interface BloodRequestCardProps {
     request: BloodRequest;
@@ -22,10 +23,16 @@ export function BloodRequestCard({ request, dict }: BloodRequestCardProps) {
                         <Badge
                             variant="secondary"
                             className="bg-brand-100 text-brand-800 hover:bg-brand-200 font-semibold">
-                            {getBloodGroupLabel(request.bloodGroup)}
+                            {getBloodGroupLabel(request.bloodGroup, dict)}
                         </Badge>
-                        <Badge variant="outline" className="text-gray-800">
-                            {request.status}
+                        <Badge
+                            variant="outline"
+                            className={`${getStatusColor(request.status)}`}>
+                            {
+                                dict.bloodRequests.status[
+                                    request.status.toLowerCase()
+                                ]
+                            }
                         </Badge>
                     </div>
 
@@ -68,14 +75,14 @@ export function BloodRequestCard({ request, dict }: BloodRequestCardProps) {
                 </div>
             </CardContent>
 
-            {request.phone && (
+            {request.phone && request.status.toLowerCase() === 'active' && (
                 <CardFooter className="pt-6">
                     <Button variant="secondary" className="w-full" asChild>
                         <a
                             href={`tel:${request.phone}`}
                             className="flex items-center gap-2">
                             <Phone className="h-4 w-4" />
-                            {dict.Contact}
+                            {dict.common.contact}
                         </a>
                     </Button>
                 </CardFooter>

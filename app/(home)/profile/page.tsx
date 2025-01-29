@@ -5,9 +5,19 @@ import { getBloodRequests, getProfile } from '@/actions/profile';
 import { Role } from '@/types/enums';
 import { User } from '@/types/user';
 import { BloodRequest } from '@/types/blood-request';
+import { Metadata } from 'next';
+import { getDictionary } from '@/i18n/get-dictionary';
+
+export async function generateMetadata(): Promise<Metadata> {
+    const dict = await getDictionary();
+    return {
+        title: dict.common.profile,
+    };
+}
 
 export default async function ProfilePage() {
     const user = await getUser();
+    const dict = await getDictionary();
 
     if (!user) {
         redirect('/signin');
@@ -27,6 +37,7 @@ export default async function ProfilePage() {
                     <ProfileLayout
                         user={profile as User}
                         bloodRequests={bloodRequests as BloodRequest[]}
+                        dict={dict}
                     />
                 </div>
             </div>

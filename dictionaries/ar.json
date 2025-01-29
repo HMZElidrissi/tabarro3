@@ -12,7 +12,14 @@
     "loading": "جارٍ التحميل...",
     "createAccount": "إنشاء حساب",
     "error": "خطأ",
-    "success": "تم بنجاح"
+    "success": "تم بنجاح",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "deleting": "جاري الحذف...",
+    "contact": "تواصل",
+    "saving": "جاري الحفظ...",
+    "saveChanges": "حفظ التغييرات",
+    "unknown": "غير معروف"
   },
   "footer": {
     "tabarro3": "تبرع",
@@ -115,6 +122,7 @@
   "Blood_Requests_Description": "طلبات التبرع الحالية في منطقتك",
   "auth": {
     "invitation": {
+      "title": "قبول الدعوة",
       "invalid": "دعوة غير صالحة",
       "invalidMessage": "رابط الدعوة هذا غير صالح أو انتهت صلاحيته.",
       "returnToSignIn": "العودة لتسجيل الدخول",
@@ -139,6 +147,7 @@
       "consentMessage": "بالتسجيل، فإنك توافق على شروط الخدمة وسياسة الخصوصية وتوافق على تلقي إشعارات حول احتياجات التبرع بالدم في منطقتك. سيتم استخدام معلوماتك لمطابقتك مع فرص التبرع المحلية."
     },
     "resetPassword": {
+      "title": "إعادة تعيين كلمة المرور",
       "newPassword": "كلمة المرور الجديدة",
       "enterNewPassword": "أدخل كلمة المرور الجديدة",
       "confirmPassword": "تأكيد كلمة المرور",
@@ -162,7 +171,10 @@
       "phoneNumber": "رقم الهاتف",
       "bloodGroup": "فصيلة الدم",
       "region": "المنطقة",
-      "city": "المدينة"
+      "city": "المدينة",
+      "location": "تفاصيل الموقع",
+      "description": "الوصف",
+      "status": "الحالة"
     },
     "placeholders": {
       "enterFullName": "أدخل اسمك الكامل",
@@ -171,11 +183,42 @@
       "enterPhoneNumber": "أدخل رقم هاتفك",
       "selectBloodGroup": "اختر فصيلة الدم",
       "selectRegion": "اختر المنطقة",
-      "selectCity": "اختر المدينة"
+      "selectCity": "اختر المدينة",
+      "enterLocation": "أدخل الموقع المحدد",
+      "enterDescription": "أدخل التفاصيل أو المتطلبات الإضافية",
+      "selectStatus": "اختر الحالة"
     },
     "validation": {
       "passwordRequirements": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل"
     }
+  },
+  "profile": {
+    "title": "إعدادات الملف الشخصي",
+    "description": "إدارة معلوماتك الشخصية وطلبات التبرع بالدم",
+    "tabs": {
+      "bloodRequests": "طلبات الدم",
+      "accountInfo": "معلومات الحساب"
+    }
+  },
+  "bloodRequests": {
+    "myRequests": "طلبات الدم الخاصة بي",
+    "newRequest": "طلب جديد",
+    "noRequests": "لم يتم العثور على طلبات دم. انقر على \"طلب جديد\" لإنشاء طلب.",
+    "status": {
+      "active": "نشط",
+      "fulfilled": "تمت التلبية",
+      "canceled": "تم الإلغاء"
+    },
+    "deleteDialog": {
+      "title": "هل أنت متأكد؟",
+      "description": "سيؤدي هذا إلى حذف طلب الدم هذا نهائياً. لا يمكن التراجع عن هذا الإجراء."
+    },
+    "creating": "جاري الإنشاء...",
+    "updating": "جاري التحديث...",
+    "createRequest": "إنشاء طلب",
+    "updateRequest": "تحديث الطلب",
+    "editRequest": "تعديل الطلب",
+    "editRequestDescription": "تعديل طلب الدم الخاص بك"
   },
   "how_it_works_title": "كيفاش تبرع تتخدم؟",
   "how_it_works_description": "تبرع هي منصة كتربط المتبرعين بالدم مع لي محتاجين. هاكيفاش كتخدم",

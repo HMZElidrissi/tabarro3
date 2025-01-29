@@ -17,8 +17,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Loader2, MoreHorizontal } from 'lucide-react';
 import { User } from '@/types/user';
-import { BloodGroup } from '@/types/enums';
-import { bloodGroups, getBloodGroupLabel } from '@/config/blood-group';
+import { getBloodGroupLabel } from '@/config/blood-group';
 
 interface ParticipantsTableProps {
     participants: User[];

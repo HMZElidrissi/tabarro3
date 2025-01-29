@@ -4,6 +4,15 @@ import { getBloodRequest } from '@/actions/profile';
 import { Role } from '@/types/enums';
 import { RequestForm } from '@/components/profile/request-form';
 import { BloodRequest } from '@/types/blood-request';
+import { Metadata } from 'next';
+import { getDictionary } from '@/i18n/get-dictionary';
+
+export async function generateMetadata(): Promise<Metadata> {
+    const dict = await getDictionary();
+    return {
+        title: dict.common.profile,
+    };
+}
 
 export default async function EditRequestPage({
     params,
@@ -12,6 +21,7 @@ export default async function EditRequestPage({
 }) {
     const { id } = await params;
     const user = await getUser();
+    const dict = await getDictionary();
 
     if (!user) {
         redirect('/sign-in');
@@ -32,16 +42,17 @@ export default async function EditRequestPage({
             <div className="space-y-6">
                 <div>
                     <h1 className="text-2xl font-bold tracking-tight">
-                        Edit Blood Request
+                        {dict.bloodRequests.editRequest}
                     </h1>
                     <p className="text-muted-foreground">
-                        Update your blood request details
+                        {dict.bloodRequests.editRequestDescription}
                     </p>
                 </div>
                 <RequestForm
                     request={request as BloodRequest}
                     userId={user.id}
                     mode="edit"
+                    dict={dict}
                 />
             </div>
         </div>

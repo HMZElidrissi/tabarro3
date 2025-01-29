@@ -12,7 +12,14 @@
     "loading": "Chargement...",
     "createAccount": "Créer un compte",
     "error": "Erreur",
-    "success": "Succès"
+    "success": "Succès",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "deleting": "Suppression...",
+    "contact": "Contact",
+    "saving": "Enregistrement...",
+    "saveChanges": "Enregistrer les modifications",
+    "unknown": "Je ne sais pas"
   },
   "footer": {
     "tabarro3": "tabarro3",
@@ -116,6 +123,7 @@
   "Blood_Requests_Description": "Demandes de don de sang actuelles dans votre région",
   "auth": {
     "invitation": {
+      "title": "Accepter l'invitation",
       "invalid": "Invitation non valide",
       "invalidMessage": "Ce lien d'invitation n'est pas valide ou a expiré.",
       "returnToSignIn": "Retour à la connexion",
@@ -140,6 +148,7 @@
       "consentMessage": "En vous inscrivant, vous acceptez nos Conditions d'utilisation, notre Politique de confidentialité et consentez à recevoir des notifications concernant les besoins en dons de sang dans votre région. Vos informations seront utilisées pour vous mettre en relation avec les opportunités de don locales."
     },
     "resetPassword": {
+      "title": "Réinitialiser le mot de passe",
       "newPassword": "Nouveau mot de passe",
       "enterNewPassword": "Entrez votre nouveau mot de passe",
       "confirmPassword": "Confirmer le mot de passe",
@@ -163,7 +172,10 @@
       "phoneNumber": "Numéro de téléphone",
       "bloodGroup": "Groupe sanguin",
       "region": "Région",
-      "city": "Ville"
+      "city": "Ville",
+      "location": "Détails de l'emplacement",
+      "description": "Description",
+      "status": "Statut"
     },
     "placeholders": {
       "enterFullName": "Entrez votre nom complet",
@@ -172,11 +184,42 @@
       "enterPhoneNumber": "Entrez votre numéro de téléphone",
       "selectBloodGroup": "Sélectionnez votre groupe sanguin",
       "selectRegion": "Sélectionnez votre région",
-      "selectCity": "Sélectionnez votre ville"
+      "selectCity": "Sélectionnez votre ville",
+      "enterLocation": "Entrez l'emplacement spécifique",
+      "enterDescription": "Entrez les détails ou exigences supplémentaires",
+      "selectStatus": "Sélectionnez le statut"
     },
     "validation": {
       "passwordRequirements": "Le mot de passe doit contenir au moins 8 caractères"
     }
+  },
+  "profile": {
+    "title": "Paramètres du profil",
+    "description": "Gérez vos informations personnelles et vos demandes de don de sang",
+    "tabs": {
+      "bloodRequests": "Demandes de sang",
+      "accountInfo": "Informations du compte"
+    }
+  },
+  "bloodRequests": {
+    "myRequests": "Mes demandes de sang",
+    "newRequest": "Nouvelle demande",
+    "noRequests": "Aucune demande de sang trouvée. Cliquez sur \"Nouvelle demande\" pour en créer une.",
+    "status": {
+      "active": "Active",
+      "fulfilled": "Accomplie",
+      "cancelled": "Annulée"
+    },
+    "deleteDialog": {
+      "title": "Êtes-vous sûr ?",
+      "description": "Cela supprimera définitivement cette demande de sang. Cette action ne peut pas être annulée."
+    },
+    "creating": "Création en cours...",
+    "updating": "Mise à jour en cours...",
+    "createRequest": "Créer une demande",
+    "updateRequest": "Mettre à jour la demande",
+    "editRequest": "Modifier la demande",
+    "editRequestDescription": "Modifiez les détails de votre demande de sang"
   },
   "how_it_works_title": "Comment ça marche",
   "how_it_works_description": "tabarro3 est une plateforme qui met en relation les donneurs de sang et les personnes ayant besoin de sang dans leur région. Voici comment ça marche :",

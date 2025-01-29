@@ -16,7 +16,6 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { Campaign } from '@/types/campaign';
-import { format, parseISO } from 'date-fns';
 import { getBloodGroupLabel } from '@/config/blood-group';
 import { Badge } from '@/components/ui/badge';
 import { UserCheck2 } from 'lucide-react';

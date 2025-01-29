@@ -4,10 +4,14 @@ import { prisma } from '@/lib/prisma';
 import { AuthCardSkeleton } from '@/components/loading/auth-card-skeleton';
 import { Suspense } from 'react';
 import { getDictionary } from '@/i18n/get-dictionary';
+import { Metadata } from 'next';
 
-export const metadata = {
-    title: 'Reset password',
-};
+export async function generateMetadata(): Promise<Metadata> {
+    const dict = await getDictionary();
+    return {
+        title: dict.auth.resetPassword.title,
+    };
+}
 
 export default async function ResetPasswordPage({
     params,

@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
-import { bloodGroups } from '@/config/blood-group';
+import { getBloodGroupLabel } from '@/config/blood-group';
 import { startTransition, useActionState, useEffect, useState } from 'react';
 import { deleteBloodRequest } from '@/actions/profile';
 import { useToast } from '@/hooks/use-toast';
@@ -31,12 +31,17 @@ import {
 import { ActionState } from '@/auth/middleware';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { getStatusColor } from '@/lib/utils';
 
 interface BloodRequestsGridProps {
     initialRequests: BloodRequest[];
+    dict: any;
 }
 
-export function BloodRequestsGrid({ initialRequests }: BloodRequestsGridProps) {
+export function BloodRequestsGrid({
+    initialRequests,
+    dict,
+}: BloodRequestsGridProps) {
     const router = useRouter();
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [selectedRequest, setSelectedRequest] = useState<BloodRequest | null>(
@@ -52,19 +57,19 @@ export function BloodRequestsGrid({ initialRequests }: BloodRequestsGridProps) {
     useEffect(() => {
         if (state.success) {
             toast({
-                title: 'Success',
+                title: dict.common.success,
                 description: state.success,
             });
             setDeleteDialogOpen(false);
             router.refresh();
         } else if (state.error) {
             toast({
-                title: 'Error',
+                title: dict.common.error,
                 description: state.error,
                 variant: 'destructive',
             });
         }
-    }, [state, toast, router]);
+    }, [state, toast, router, dict]);
 
     const handleDelete = async (request: BloodRequest) => {
         const formData = new FormData();
@@ -74,31 +79,16 @@ export function BloodRequestsGrid({ initialRequests }: BloodRequestsGridProps) {
         });
     };
 
-    const getBloodGroupLabel = (value: string) => {
-        return bloodGroups.find(group => group.value === value)?.label || value;
-    };
-
-    const getStatusColor = (status: string) => {
-        switch (status.toLowerCase()) {
-            case 'active':
-                return 'bg-green-50 text-green-700 border-green-200';
-            case 'fulfilled':
-                return 'bg-gray-50 text-gray-700 border-gray-200';
-            case 'cancelled':
-                return 'bg-red-50 text-red-700 border-red-200';
-            default:
-                return 'bg-blue-50 text-blue-700 border-blue-200';
-        }
-    };
-
     return (
         <>
             <div className="mb-6 flex justify-between items-center">
-                <h2 className="text-xl font-semibold">My Blood Requests</h2>
+                <h2 className="text-xl font-semibold">
+                    {dict.bloodRequests.myRequests}
+                </h2>
                 <Link href="/profile/requests/new">
                     <Button>
                         <Plus className="mr-2 h-4 w-4" />
-                        New Request
+                        {dict.bloodRequests.newRequest}
                     </Button>
                 </Link>
             </div>
@@ -114,7 +104,11 @@ export function BloodRequestsGrid({ initialRequests }: BloodRequestsGridProps) {
                                 <Badge
                                     variant="outline"
                                     className={`${getStatusColor(request.status)}`}>
-                                    {request.status}
+                                    {
+                                        dict.bloodRequests.status[
+                                            request.status.toLowerCase()
+                                        ]
+                                    }
                                 </Badge>
                                 <div className="flex gap-2">
                                     <Link
@@ -138,7 +132,7 @@ export function BloodRequestsGrid({ initialRequests }: BloodRequestsGridProps) {
                         <CardContent className="space-y-3">
                             <div className="flex items-center gap-2 text-xl font-semibold text-primary">
                                 <Droplets className="h-5 w-5" />
-                                {getBloodGroupLabel(request.bloodGroup)}
+                                {getBloodGroupLabel(request.bloodGroup, dict)}
                             </div>
                             <div className="space-y-2 text-sm text-muted-foreground">
                                 <div className="flex items-center gap-2">
@@ -168,8 +162,7 @@ export function BloodRequestsGrid({ initialRequests }: BloodRequestsGridProps) {
 
                 {initialRequests.length === 0 && (
                     <div className="col-span-full text-center py-12 text-muted-foreground">
-                        No blood requests found. Click "New Request" to create
-                        one.
+                        {dict.bloodRequests.noRequests}
                     </div>
                 )}
             </div>
@@ -179,21 +172,26 @@ export function BloodRequestsGrid({ initialRequests }: BloodRequestsGridProps) {
                 onOpenChange={setDeleteDialogOpen}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                        <AlertDialogTitle>
+                            {dict.bloodRequests.deleteDialog.title}
+                        </AlertDialogTitle>
                         <AlertDialogDescription>
-                            This will permanently delete this blood request.
-                            This action cannot be undone.
+                            {dict.bloodRequests.deleteDialog.description}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel>
+                            {dict.common.cancel}
+                        </AlertDialogCancel>
                         <AlertDialogAction
                             onClick={() =>
                                 selectedRequest && handleDelete(selectedRequest)
                             }
                             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                             disabled={pending}>
-                            {pending ? 'Deleting...' : 'Delete'}
+                            {pending
+                                ? dict.common.deleting
+                                : dict.common.delete}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
