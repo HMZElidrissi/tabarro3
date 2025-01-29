@@ -38,7 +38,7 @@ model City {
   id            Int            @id
   name          String
   regionId      Int            @map("region_id")
-  region        Region         @relation(fields: [regionId], references: [id])
+  region        Region         @relation(fields: [regionId], references: [id], onDelete: Cascade)
   users         User[]
   bloodRequests BloodRequest[]
   campaigns     Campaign[]
@@ -66,7 +66,7 @@ model User {
   role            Role            @default(PARTICIPANT)
   phone           String?         @db.VarChar(20)
   bloodGroup      BloodGroup?     @map("blood_group")
-  city            City?           @relation(fields: [cityId], references: [id])
+  city            City?           @relation(fields: [cityId], references: [id], onDelete: SetNull)
   cityId          Int?            @map("city_id")
   createdAt       DateTime        @default(now()) @map("created_at")
   updatedAt       DateTime        @default(now()) @map("updated_at")
@@ -88,7 +88,7 @@ model ActivityLog {
   action    String
   timestamp DateTime @default(now())
   ipAddress String?  @map("ip_address") @db.VarChar(45)
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("activity_logs")
 }
@@ -102,7 +102,7 @@ model Invitation {
   expiresAt DateTime @map("expires_at")
   status    String   @default("pending") @db.VarChar(20)
   token     String   @unique // For secure invitation links
-  inviter   User     @relation("InvitedBy", fields: [invitedBy], references: [id])
+  inviter   User     @relation("InvitedBy", fields: [invitedBy], references: [id], onDelete: Cascade)
 
   @@map("invitations")
 }
@@ -114,7 +114,7 @@ model PasswordReset {
   expiresAt DateTime @map("expires_at")
   createdAt DateTime @default(now()) @map("created_at")
   used      Boolean  @default(false)
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("password_resets")
 }
@@ -124,7 +124,7 @@ model Campaign {
   name           String
   description    String   @db.Text
   cityId         Int      @map("city_id")
-  city           City     @relation(fields: [cityId], references: [id])
+  city           City     @relation(fields: [cityId], references: [id], onDelete: Restrict)
   location       String
   startTime      DateTime @map("start_time")
   endTime        DateTime @map("end_time")
@@ -132,7 +132,7 @@ model Campaign {
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
 
-  organization User                  @relation("OrganizedCampaigns", fields: [organizationId], references: [id])
+  organization User                  @relation("OrganizedCampaigns", fields: [organizationId], references: [id], onDelete: Cascade)
   participants CampaignParticipant[]
 
   @@map("campaigns")
@@ -145,8 +145,8 @@ model CampaignParticipant {
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 
-  campaign Campaign @relation(fields: [campaignId], references: [id])
-  user     User     @relation(fields: [userId], references: [id])
+  campaign Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([campaignId, userId])
   @@map("campaign_participants")
@@ -156,7 +156,7 @@ model BloodRequest {
   id          Int        @id @default(autoincrement())
   description String     @db.Text
   bloodGroup  BloodGroup @map("blood_group")
-  city        City       @relation(fields: [cityId], references: [id])
+  city        City       @relation(fields: [cityId], references: [id], onDelete: Restrict)
   cityId      Int        @map("city_id")
   location    String
   phone       String
@@ -165,7 +165,7 @@ model BloodRequest {
   createdAt   DateTime   @default(now()) @map("created_at")
   updatedAt   DateTime   @updatedAt @map("updated_at")
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("blood_requests")
 }
