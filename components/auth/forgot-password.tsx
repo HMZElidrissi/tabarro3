@@ -7,7 +7,11 @@ import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ActionState } from '@/auth/middleware';
 
-export function ForgotPasswordForm() {
+interface ForgotPasswordFormProps {
+    dict: any;
+}
+
+export function ForgotPasswordForm({ dict }: ForgotPasswordFormProps) {
     const [state, formAction, pending] = useActionState<ActionState, FormData>(
         forgotPassword,
         { error: '', success: '' },
@@ -16,10 +20,11 @@ export function ForgotPasswordForm() {
     return (
         <div className="mx-auto max-w-sm space-y-6">
             <div className="space-y-2 text-center">
-                <h1 className="text-2xl font-bold">Forgot Password</h1>
+                <h1 className="text-2xl font-bold">
+                    {dict.auth.forgotPassword.title}
+                </h1>
                 <p className="text-gray-500">
-                    Enter your email address and we'll send you instructions to
-                    reset your password.
+                    {dict.auth.forgotPassword.description}
                 </p>
             </div>
 
@@ -28,7 +33,7 @@ export function ForgotPasswordForm() {
                     <Input
                         name="email"
                         type="email"
-                        placeholder="Email"
+                        placeholder={dict.forms.labels.email}
                         required
                         className="w-full"
                     />
@@ -50,7 +55,9 @@ export function ForgotPasswordForm() {
                     type="submit"
                     className="w-full bg-brand-600 hover:bg-brand-700"
                     disabled={pending}>
-                    {pending ? 'Sending...' : 'Send Reset Instructions'}
+                    {pending
+                        ? dict.auth.forgotPassword.sending
+                        : dict.auth.forgotPassword.sendInstructions}
                 </Button>
             </form>
         </div>

@@ -13,9 +13,10 @@ import { ActionState } from '@/auth/middleware';
 
 interface ResetPasswordFormProps {
     token: string;
+    dict: any;
 }
 
-export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
+export function ResetPasswordForm({ token, dict }: ResetPasswordFormProps) {
     const router = useRouter();
     const { toast } = useToast();
     const [state, formAction, pending] = useActionState<ActionState, FormData>(
@@ -26,25 +27,27 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
     useEffect(() => {
         if (state.error) {
             toast({
-                title: 'Error',
+                title: dict.common.error,
                 description: state.error,
                 variant: 'destructive',
             });
         } else if (state.success) {
             toast({
-                title: 'Success',
+                title: dict.common.success,
                 description: state.success,
             });
             router.push('/sign-in');
         }
-    }, [state, router, toast]);
+    }, [state, router, toast, dict]);
 
     return (
         <form action={formAction} className="space-y-4">
             <input type="hidden" name="token" value={token} />
 
             <div>
-                <Label htmlFor="password">New Password</Label>
+                <Label htmlFor="password">
+                    {dict.auth.resetPassword.newPassword}
+                </Label>
                 <Input
                     id="password"
                     name="password"
@@ -53,13 +56,15 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
                     minLength={8}
                     maxLength={100}
                     className="mt-1"
-                    placeholder="Enter your new password"
+                    placeholder={dict.auth.resetPassword.enterNewPassword}
                     autoComplete="new-password"
                 />
             </div>
 
             <div>
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Label htmlFor="confirmPassword">
+                    {dict.auth.resetPassword.confirmPassword}
+                </Label>
                 <Input
                     id="confirmPassword"
                     name="confirmPassword"
@@ -68,7 +73,9 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
                     minLength={8}
                     maxLength={100}
                     className="mt-1"
-                    placeholder="Confirm your new password"
+                    placeholder={
+                        dict.auth.resetPassword.confirmPasswordPlaceholder
+                    }
                     autoComplete="new-password"
                 />
             </div>
@@ -80,10 +87,10 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
                 {pending ? (
                     <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Resetting password...
+                        {dict.auth.resetPassword.resettingPassword}
                     </>
                 ) : (
-                    'Reset Password'
+                    dict.auth.resetPassword.resetPassword
                 )}
             </Button>
         </form>

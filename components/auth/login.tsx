@@ -1,12 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Button2 } from '@/components/ui/button';
 import { Input, InputError } from '@/components/ui/input';
 import { Label2 } from '@/components/ui/label';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Pin } from 'lucide-react';
 import { signIn } from '@/actions/sign-in';
 import { signUp } from '@/actions/sign-up';
 import { acceptInvitation } from '@/actions/invitation';
@@ -19,14 +19,15 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { REGIONS_AND_CITIES } from '@/config/locations';
-import { useState } from 'react';
 import { bloodGroups } from '@/config/blood-group';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 type LoginProps = {
     mode?: 'signin' | 'signup' | 'accept-invitation';
+    dict: any;
 };
 
-export function Login({ mode = 'signin' }: LoginProps) {
+export function Login({ mode = 'signin', dict }: LoginProps) {
     const searchParams = useSearchParams();
     const token = searchParams.get('token');
     const email = searchParams.get('email');
@@ -45,15 +46,15 @@ export function Login({ mode = 'signin' }: LoginProps) {
         return (
             <div className="text-center">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                    Invalid Invitation
+                    {dict.auth.invitation.invalid}
                 </h2>
                 <p className="text-gray-600 mb-6">
-                    This invitation link is invalid or has expired.
+                    {dict.auth.invitation.invalidMessage}
                 </p>
                 <Link
                     href="/sign-in"
                     className="text-gray-600 hover:text-gray-900 underline rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
-                    Return to sign in
+                    {dict.auth.invitation.returnToSignIn}
                 </Link>
             </div>
         );
@@ -67,12 +68,21 @@ export function Login({ mode = 'signin' }: LoginProps) {
             {mode === 'accept-invitation' && (
                 <>
                     <h2 className="text-2xl font-medium text-center text-gray-900">
-                        Complete your registration
+                        {dict.auth.invitation.completeRegistration}
                     </h2>
                     <p className="mt-2 text-center text-sm text-gray-600">
-                        You've been invited to join. Please set up your account.
+                        {dict.auth.invitation.setupMessage}
                     </p>
                 </>
+            )}
+
+            {mode === 'signup' && (
+                <Alert variant="information" className="mt-4">
+                    <Pin className="h-4 w-4" />
+                    <AlertDescription>
+                        {dict.auth.signUp.consentMessage}
+                    </AlertDescription>
+                </Alert>
             )}
 
             <form className="mt-6 space-y-4" action={formAction}>
@@ -82,7 +92,9 @@ export function Login({ mode = 'signin' }: LoginProps) {
 
                 {isRegistrationMode && (
                     <div>
-                        <Label2 htmlFor="name">Full Name</Label2>
+                        <Label2 htmlFor="name">
+                            {dict.forms.labels.fullName}
+                        </Label2>
                         <Input
                             id="name"
                             name="name"
@@ -90,13 +102,13 @@ export function Login({ mode = 'signin' }: LoginProps) {
                             required
                             maxLength={100}
                             className="block mt-1 w-full"
-                            placeholder="Enter your full name"
+                            placeholder={dict.forms.placeholders.enterFullName}
                         />
                     </div>
                 )}
 
                 <div>
-                    <Label2 htmlFor="email">Email</Label2>
+                    <Label2 htmlFor="email">{dict.forms.labels.email}</Label2>
                     <Input
                         id="email"
                         name="email"
@@ -107,13 +119,15 @@ export function Login({ mode = 'signin' }: LoginProps) {
                         defaultValue={email || ''}
                         readOnly={mode === 'accept-invitation' && !!email}
                         className="block mt-1 w-full"
-                        placeholder="Enter your email"
+                        placeholder={dict.forms.placeholders.enterEmail}
                     />
                 </div>
 
                 <div>
                     <Label2 htmlFor="password">
-                        {mode === 'signin' ? 'Password' : 'Create password'}
+                        {mode === 'signin'
+                            ? dict.auth.signIn.password
+                            : dict.auth.signUp.createPassword}
                     </Label2>
                     <Input
                         id="password"
@@ -130,13 +144,13 @@ export function Login({ mode = 'signin' }: LoginProps) {
                         className="block mt-1 w-full"
                         placeholder={
                             mode === 'signin'
-                                ? 'Enter your password'
-                                : 'Create a secure password'
+                                ? dict.auth.signIn.enterPassword
+                                : dict.auth.signUp.createSecurePassword
                         }
                     />
                     {isRegistrationMode && (
                         <p className="mt-1 text-sm text-gray-500">
-                            Password must be at least 8 characters long
+                            {dict.forms.validation.passwordRequirements}
                         </p>
                     )}
                 </div>
@@ -144,7 +158,7 @@ export function Login({ mode = 'signin' }: LoginProps) {
                 {isRegistrationMode && (
                     <div>
                         <Label2 htmlFor="confirmPassword">
-                            Confirm password
+                            {dict.forms.labels.confirmPassword}
                         </Label2>
                         <Input
                             id="confirmPassword"
@@ -155,7 +169,9 @@ export function Login({ mode = 'signin' }: LoginProps) {
                             minLength={8}
                             maxLength={100}
                             className="block mt-1 w-full"
-                            placeholder="Confirm your password"
+                            placeholder={
+                                dict.forms.placeholders.confirmPassword
+                            }
                         />
                     </div>
                 )}
@@ -163,25 +179,34 @@ export function Login({ mode = 'signin' }: LoginProps) {
                 {isRegistrationMode && (
                     <>
                         <div>
-                            <Label2 htmlFor="phone">Phone Number</Label2>
+                            <Label2 htmlFor="phone">
+                                {dict.forms.labels.phoneNumber}
+                            </Label2>
                             <Input
                                 id="phone"
                                 name="phone"
                                 type="tel"
                                 maxLength={20}
                                 className="block mt-1 w-full"
-                                placeholder="Enter your phone number"
+                                placeholder={
+                                    dict.forms.placeholders.enterPhoneNumber
+                                }
                             />
                         </div>
 
                         {mode === 'signup' && (
                             <div>
                                 <Label2 htmlFor="bloodGroup">
-                                    Blood Group
+                                    {dict.forms.labels.bloodGroup}
                                 </Label2>
                                 <Select name="bloodGroup">
                                     <SelectTrigger>
-                                        <SelectValue placeholder="Select your blood group" />
+                                        <SelectValue
+                                            placeholder={
+                                                dict.forms.placeholders
+                                                    .selectBloodGroup
+                                            }
+                                        />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {bloodGroups.map(group => (
@@ -197,14 +222,20 @@ export function Login({ mode = 'signin' }: LoginProps) {
                         )}
 
                         <div>
-                            <Label2 htmlFor="region">Region</Label2>
+                            <Label2 htmlFor="region">
+                                {dict.forms.labels.region}
+                            </Label2>
                             <Select
                                 name="region"
                                 onValueChange={(value: string) => {
                                     setSelectedRegion(value);
                                 }}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Select your region" />
+                                    <SelectValue
+                                        placeholder={
+                                            dict.forms.placeholders.selectRegion
+                                        }
+                                    />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {REGIONS_AND_CITIES.map(region => (
@@ -219,10 +250,16 @@ export function Login({ mode = 'signin' }: LoginProps) {
                         </div>
 
                         <div>
-                            <Label2 htmlFor="cityId">City</Label2>
+                            <Label2 htmlFor="cityId">
+                                {dict.forms.labels.city}
+                            </Label2>
                             <Select name="cityId">
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Select your city" />
+                                    <SelectValue
+                                        placeholder={
+                                            dict.forms.placeholders.selectCity
+                                        }
+                                    />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {selectedRegion &&
@@ -260,14 +297,14 @@ export function Login({ mode = 'signin' }: LoginProps) {
                                     className="rounded border-gray-300 text-brand-600 shadow-sm focus:border-brand-300 focus:ring focus:ring-brand-200 focus:ring-opacity-50"
                                 />
                                 <span className="ml-2 text-sm text-gray-600">
-                                    Remember me
+                                    {dict.auth.signIn.rememberMe}
                                 </span>
                             </label>
 
                             <Link
                                 href="/forgot-password"
                                 className="text-sm text-gray-600 hover:text-gray-900 underline rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
-                                Forgot your password?
+                                {dict.auth.signIn.forgotPassword}
                             </Link>
                         </div>
                     </div>
@@ -280,14 +317,14 @@ export function Login({ mode = 'signin' }: LoginProps) {
                         {pending ? (
                             <>
                                 <Loader2 className="animate-spin mr-2 h-4 w-4" />
-                                Loading...
+                                {dict.common.loading}
                             </>
                         ) : mode === 'signin' ? (
-                            'Sign in'
+                            dict.auth.signIn.title
                         ) : mode === 'signup' ? (
-                            'Sign up'
+                            dict.auth.signUp.title
                         ) : (
-                            'Create account'
+                            dict.common.createAccount
                         )}
                     </Button2>
                 </div>
@@ -301,8 +338,8 @@ export function Login({ mode = 'signin' }: LoginProps) {
                     <div className="relative flex justify-center text-sm">
                         <span className="px-2 bg-white text-gray-500">
                             {mode === 'signin'
-                                ? 'Need an account?'
-                                : 'Already have an account?'}
+                                ? dict.auth.signIn.needAccount
+                                : dict.auth.signUp.haveAccount}
                         </span>
                     </div>
                 </div>
@@ -313,14 +350,14 @@ export function Login({ mode = 'signin' }: LoginProps) {
                             <Link
                                 href="/sign-up"
                                 className="text-sm text-gray-600 hover:text-gray-900 underline">
-                                Sign up for an account
+                                {dict.auth.signIn.signUpLink}
                             </Link>
                         </>
                     ) : (
                         <Link
                             href="/sign-in"
                             className="text-sm text-gray-600 hover:text-gray-900 underline">
-                            Sign in to your account
+                            {dict.auth.signUp.signInLink}
                         </Link>
                     )}
                 </div>

@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { AuthCardSkeleton } from '@/components/loading/auth-card-skeleton';
 import { Suspense } from 'react';
+import { getDictionary } from '@/i18n/get-dictionary';
 
 export const metadata = {
     title: 'Reset password',
@@ -13,6 +14,7 @@ export default async function ResetPasswordPage({
 }: {
     params: Promise<{ token: string }>;
 }) {
+    const dict = await getDictionary();
     const { token } = await params;
     const resetRequest = await prisma.passwordReset.findFirst({
         where: {
@@ -30,7 +32,7 @@ export default async function ResetPasswordPage({
 
     return (
         <Suspense fallback={<AuthCardSkeleton />}>
-            <ResetPasswordForm token={token} />
+            <ResetPasswordForm token={token} dict={dict} />
         </Suspense>
     );
 }
