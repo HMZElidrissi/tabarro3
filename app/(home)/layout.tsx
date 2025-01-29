@@ -1,15 +1,12 @@
 import { getDictionary } from '@/i18n/get-dictionary';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Button } from '@/components/ui/button';
-import { Menu } from 'lucide-react';
 import { DesktopNav } from '@/components/layout/desktop-nav';
 import { MobileNav } from '@/components/layout/mobile-nav';
 import Footer from '@/components/layout/footer';
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
-import { DialogTitle } from '@/components/ui/dialog';
 import { UserProvider } from '@/auth';
 import { getUser } from '@/auth/session';
 import { getCurrentLanguage } from '@/actions/language';
+import { languages } from '@/config/home';
+import { switchLanguage } from '@/actions/language';
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -42,33 +39,13 @@ export default async function Layout({ children }: LayoutProps) {
                             {/*</Link>*/}
 
                             <div className="flex items-center">
-                                {/* Mobile Navigation Button */}
-                                <Sheet>
-                                    <SheetTrigger
-                                        asChild
-                                        className="lg:hidden mr-4">
-                                        <Button variant="ghost" size="icon">
-                                            <Menu className="h-5 w-5" />
-                                            <span className="sr-only">
-                                                {dict.common.openMenu}
-                                            </span>
-                                        </Button>
-                                    </SheetTrigger>
-                                    <SheetContent
-                                        side="left"
-                                        className="w-80"
-                                        aria-describedby="Mobile Navigation">
-                                        <VisuallyHidden>
-                                            <DialogTitle>
-                                                Mobile Navigation
-                                            </DialogTitle>
-                                        </VisuallyHidden>
-                                        <MobileNav
-                                            dict={dict}
-                                            initialLocale={currentLocale}
-                                        />
-                                    </SheetContent>
-                                </Sheet>
+                                {/* Mobile Navigation */}
+                                <MobileNav
+                                    dict={dict}
+                                    initialLocale={currentLocale}
+                                    languages={languages}
+                                    onLanguageSwitch={switchLanguage}
+                                />
                             </div>
 
                             {/* Desktop Navigation */}
