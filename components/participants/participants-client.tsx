@@ -10,11 +10,12 @@ import {
 } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { deleteParticipant, getParticipants } from '@/actions/participant';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { ParticipantsTable } from '@/components/participants/participants-table';
 import { ActionState } from '@/auth/middleware';
 import { User } from '@/types/user';
 import { BloodGroup } from '@/types/enums';
+import { PaginationControls } from '@/components/custom/pagination-controls';
 
 interface ParticipantsClientProps {
     currentPage: number;
@@ -22,12 +23,16 @@ interface ParticipantsClientProps {
     currentBloodGroup: BloodGroup | null;
 }
 
+const PAGE_SIZE = 10;
+
 export default function ParticipantsClient({
     currentPage,
     currentSearch,
     currentBloodGroup,
 }: ParticipantsClientProps) {
     const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
     const [participants, setParticipants] = useState<User[]>([]);
     const [totalCount, setTotalCount] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
@@ -36,6 +41,30 @@ export default function ParticipantsClient({
         ActionState,
         FormData
     >(deleteParticipant, { error: '', success: '' });
+
+    const totalPages = Math.ceil(totalCount / PAGE_SIZE);
+
+    // Create query string helper
+    const createQueryString = (params: Record<string, string>) => {
+        const newParams = new URLSearchParams(searchParams);
+        Object.entries(params).forEach(([key, value]) => {
+            if (!value) {
+                newParams.delete(key);
+            } else {
+                newParams.set(key, value);
+            }
+        });
+        return newParams.toString();
+    };
+
+    // Handle page change
+    const handlePageChange = (page: number) => {
+        router.push(
+            `${pathname}?${createQueryString({
+                page: page.toString(),
+            })}`,
+        );
+    };
 
     // Load participants with filters
     useEffect(() => {
@@ -63,7 +92,7 @@ export default function ParticipantsClient({
         try {
             const result = await getParticipants({
                 page: currentPage,
-                pageSize: 10,
+                pageSize: PAGE_SIZE,
                 search: currentSearch,
                 bloodGroup: currentBloodGroup || undefined,
             });
@@ -109,6 +138,15 @@ export default function ParticipantsClient({
                     onDeleteParticipant={handleDelete}
                     isLoading={isLoading || deletePending}
                 />
+
+                {totalPages > 1 && (
+                    <div className="mt-4 flex justify-center">
+                        <PaginationControls
+                            totalPages={totalPages}
+                            onPageChange={handlePageChange}
+                        />
+                    </div>
+                )}
             </CardContent>
         </Card>
     );

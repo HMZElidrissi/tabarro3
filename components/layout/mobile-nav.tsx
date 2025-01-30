@@ -159,18 +159,20 @@ export function MobileNav({ dict, initialLocale }: MobileNavProps) {
                                 <Button
                                     variant="default"
                                     className="w-full bg-brand-600 text-white hover:bg-brand-700"
-                                    onClick={() => setIsOpen(false)}>
-                                    <Link href="/sign-in">
-                                        {dict.common.signIn}
-                                    </Link>
+                                    onClick={() => {
+                                        setIsOpen(false);
+                                        router.push('/sign-in');
+                                    }}>
+                                    {dict.common.signIn}
                                 </Button>
                                 <Button
                                     variant="outline"
                                     className="mt-2 w-full"
-                                    onClick={() => setIsOpen(false)}>
-                                    <Link href="/sign-up">
-                                        {dict.common.signUp}
-                                    </Link>
+                                    onClick={() => {
+                                        setIsOpen(false);
+                                        router.push('/sign-up');
+                                    }}>
+                                    {dict.common.signUp}
                                 </Button>
                             </>
                         )}

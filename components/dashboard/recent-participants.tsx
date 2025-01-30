@@ -5,6 +5,7 @@ import { User } from '@/types/user';
 import { format } from 'date-fns';
 import { BloodGroup } from '@/types/enums';
 import { Droplets } from 'lucide-react';
+import { getBloodGroupLabel } from '@/config/blood-group';
 
 interface RecentParticipantsProps {
     participants: User[];
@@ -20,10 +21,6 @@ const bloodGroupColors: Record<BloodGroup, string> = {
     AB_POSITIVE: 'text-purple-500',
     AB_NEGATIVE: 'text-purple-700',
     UNKNOWN: 'text-gray-500',
-};
-
-const formatBloodGroup = (bloodGroup: BloodGroup) => {
-    return bloodGroup.replace('_', ' ');
 };
 
 const getInitials = (name: string | null) => {
@@ -63,7 +60,7 @@ export function RecentParticipants({ participants }: RecentParticipantsProps) {
                             <div
                                 className={`flex items-center font-medium ${bloodGroupColors[participant.bloodGroup]}`}>
                                 <Droplets className="h-4 w-4 mr-1" />
-                                {formatBloodGroup(participant.bloodGroup)}
+                                {getBloodGroupLabel(participant.bloodGroup)}
                             </div>
                         )}
                     </div>
