@@ -1,25 +1,11 @@
 import Image from 'next/image';
-import { FaInstagram, FaLinkedin } from 'react-icons/fa';
-import { Button } from '@/components/ui/button';
+import SocialIcon from '@/components/social-icons';
 
 interface FooterProps {
     dict: any;
 }
 
 export default function Footer({ dict }: FooterProps) {
-    const socialLinks = [
-        {
-            icon: FaInstagram,
-            href: 'https://www.instagram.com/rotaract_les_merinides/',
-            label: 'Instagram',
-        },
-        {
-            icon: FaLinkedin,
-            href: 'https://www.linkedin.com/company/rotaract-les-merinides/',
-            label: 'LinkedIn',
-        },
-    ];
-
     return (
         <footer className="relative border-t bg-gradient-to-b from-brand-700 to-brand-900">
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-200 to-transparent" />
@@ -42,23 +28,27 @@ export default function Footer({ dict }: FooterProps) {
                     </div>
 
                     <div className="flex flex-col items-center gap-4 md:items-end">
-                        <div className="flex items-center gap-2">
-                            {socialLinks.map(link => (
-                                <Button
-                                    key={link.label}
-                                    variant="ghost"
-                                    size="icon"
-                                    asChild
-                                    className="rounded-full bg-white/80 text-brand-600 hover:bg-brand-100 hover:text-brand-700 transition-colors duration-300">
-                                    <a
-                                        href={link.href}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        aria-label={link.label}>
-                                        <link.icon className="h-5 w-5" />
-                                    </a>
-                                </Button>
-                            ))}
+                        <div className="flex items-center gap-4">
+                            <SocialIcon
+                                kind="mail"
+                                href="mailto:rotaractlesmerinides@gmail.com"
+                                size={6}
+                            />
+                            <SocialIcon
+                                kind="instagram"
+                                href="https://www.instagram.com/rotaract_les_merinides/"
+                                size={6}
+                            />
+                            <SocialIcon
+                                kind="linkedin"
+                                href="https://www.linkedin.com/company/rotaract-les-merinides/"
+                                size={6}
+                            />
+                            <SocialIcon
+                                kind="twitter"
+                                href="https://x.com/dondesang_maroc"
+                                size={6}
+                            />
                         </div>
                     </div>
                 </div>
