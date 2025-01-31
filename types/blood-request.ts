@@ -11,8 +11,8 @@ export interface BloodRequest {
     location: string;
     phone: string;
     status: string;
-    userId: string;
+    userId: string | null;
     createdAt: Date;
     updatedAt: Date;
-    user: User;
+    user: User | null;
 }

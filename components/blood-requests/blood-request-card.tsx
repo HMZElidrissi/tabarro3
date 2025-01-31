@@ -54,16 +54,17 @@ export function BloodRequestCard({ request, dict }: BloodRequestCardProps) {
                             </div>
                         )}
 
-                        <div className="flex items-center gap-2 text-sm text-gray-800">
-                            <User className="h-4 w-4" />
-                            {request.user.name}
-                        </div>
-
-                        {request.phone && (
-                            <div className="flex items-center gap-2 text-sm text-gray-800">
-                                <Mailbox className="h-4 w-4" />
-                                {request.user.email}
-                            </div>
+                        {request.user && (
+                            <>
+                                <div className="flex items-center gap-2 text-sm text-gray-800">
+                                    <User className="h-4 w-4" />
+                                    {request.user.name}
+                                </div>
+                                <div className="flex items-center gap-2 text-sm text-gray-800">
+                                    <Mailbox className="h-4 w-4" />
+                                    {request.user.email}
+                                </div>
+                            </>
                         )}
 
                         {request.description && (

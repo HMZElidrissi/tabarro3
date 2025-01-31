@@ -158,7 +158,7 @@ export const exportBloodRequests = validatedActionWithUser(
                 'Date',
             ];
             const data = requests.map(request => [
-                request.user.name || 'N/A',
+                request.user?.name || 'N/A',
                 request.bloodGroup.replace('_', ' '),
                 request.city.name,
                 request.location,

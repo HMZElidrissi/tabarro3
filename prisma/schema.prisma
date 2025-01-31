@@ -159,13 +159,13 @@ model BloodRequest {
   city        City       @relation(fields: [cityId], references: [id], onDelete: Restrict)
   cityId      Int        @map("city_id")
   location    String
-  phone       String
+  phone       String?
   status      String
-  userId      String     @map("user_id")
+  userId      String?    @map("user_id")
   createdAt   DateTime   @default(now()) @map("created_at")
   updatedAt   DateTime   @updatedAt @map("updated_at")
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("blood_requests")
 }

@@ -1,6 +1,7 @@
 import {
     Building2Icon,
     Calendar1Icon,
+    Droplets,
     Home,
     Settings,
     UsersIcon,
@@ -29,6 +30,13 @@ export const mainNavigation: NavigationItem[] = [
         icon: UsersIcon,
         href: '/dashboard/participants',
         pattern: '^/dashboard/participants',
+        roles: [Role.ADMIN],
+    },
+    {
+        title: 'Requests',
+        icon: Droplets,
+        href: '/dashboard/requests',
+        pattern: '^/dashboard/requests',
         roles: [Role.ADMIN],
     },
     {
