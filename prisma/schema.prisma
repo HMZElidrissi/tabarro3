@@ -169,3 +169,32 @@ model BloodRequest {
 
   @@map("blood_requests")
 }
+
+enum JobStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum JobType {
+  CAMPAIGN_NOTIFICATION
+  BLOOD_REQUEST_NOTIFICATION
+}
+
+model Job {
+  id          String    @id @default(uuid())
+  type        JobType
+  payload     Json
+  status      JobStatus @default(PENDING)
+  attempts    Int       @default(0)
+  maxAttempts Int       @default(3) @map("max_attempts")
+  error       String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  processedAt DateTime? @map("processed_at")
+
+  @@index([status, type])
+  @@index([createdAt])
+  @@map("jobs")
+}
