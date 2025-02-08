@@ -1,0 +1,187 @@
+import { prisma } from '@/lib/prisma';
+import nodemailer from 'nodemailer';
+import { Job, JobType, JobStatus } from '@/types/job';
+import { render } from '@react-email/components';
+import { UrgentBloodRequestEmail } from '@/emails/urgent-blood-request';
+import { NearbyCampaignEmail } from '@/emails/nearby-campaign';
+
+const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: parseInt(process.env.SMTP_PORT || '587'),
+    secure: process.env.SMTP_SECURE === 'true',
+    auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASSWORD,
+    },
+});
+
+const FROM_EMAIL = process.env.FROM_EMAIL || 'noreply@tabarro3.ma';
+
+const jobHandlers = {
+    [JobType.CAMPAIGN_NOTIFICATION]: async (payload: any) => {
+        const { campaignId } = payload;
+
+        // Fetch campaign details with relationships
+        const campaign = await prisma.campaign.findUnique({
+            where: { id: campaignId },
+            include: {
+                organization: true,
+                city: true,
+            },
+        });
+
+        if (!campaign) throw new Error('Campaign not found');
+
+        // Find recipients in the same region
+        const recipients = await prisma.user.findMany({
+            where: {
+                role: 'PARTICIPANT',
+                city: {
+                    regionId: campaign.city.regionId,
+                },
+            },
+            select: {
+                email: true,
+            },
+        });
+
+        // Prepare email content
+        const startDate = new Date(campaign.startTime);
+        const endDate = new Date(campaign.endTime);
+
+        const emailHtml = await render(
+            NearbyCampaignEmail({
+                campaignName: campaign.name,
+                organizationName: campaign.organization.name || undefined,
+                date: startDate.toLocaleDateString('fr-FR'),
+                time: `${startDate.toLocaleTimeString('fr-FR')} - ${endDate.toLocaleTimeString('fr-FR')}`,
+                location: campaign.location,
+                city: campaign.city.name,
+                description: campaign.description,
+            }),
+            { pretty: true },
+        );
+
+        // Send emails in chunks of 50
+        const chunkSize = 50;
+        for (let i = 0; i < recipients.length; i += chunkSize) {
+            const chunk = recipients.slice(i, i + chunkSize);
+            await transporter.sendMail({
+                from: FROM_EMAIL,
+                bcc: chunk.map(r => r.email),
+                subject: `Nouvelle campagne de don de sang à ${campaign.city.name}`,
+                html: emailHtml,
+            });
+
+            // Small delay between chunks
+            if (i + chunkSize < recipients.length) {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+        }
+    },
+
+    [JobType.BLOOD_REQUEST_NOTIFICATION]: async (payload: any) => {
+        const { requestId } = payload;
+
+        // Fetch request details with relationships
+        const request = await prisma.bloodRequest.findUnique({
+            where: { id: requestId },
+            include: {
+                city: true,
+            },
+        });
+
+        if (!request) throw new Error('Blood request not found');
+
+        // Find recipients in the same region with matching blood group
+        const recipients = await prisma.user.findMany({
+            where: {
+                role: 'PARTICIPANT',
+                bloodGroup: request.bloodGroup,
+                city: {
+                    regionId: request.city.regionId,
+                },
+            },
+            select: {
+                email: true,
+            },
+        });
+
+        const emailHtml = await render(
+            UrgentBloodRequestEmail({
+                bloodGroup: request.bloodGroup,
+                location: request.location,
+                city: request.city.name,
+                phone: request.phone || undefined,
+                description: request.description,
+            }),
+            { pretty: true },
+        );
+
+        // Send emails in chunks of 50
+        const chunkSize = 50;
+        for (let i = 0; i < recipients.length; i += chunkSize) {
+            const chunk = recipients.slice(i, i + chunkSize);
+            await transporter.sendMail({
+                from: FROM_EMAIL,
+                bcc: chunk.map(r => r.email),
+                subject: `Besoin urgent de sang ${request.bloodGroup} à ${request.city.name}`,
+                html: emailHtml,
+            });
+
+            // Small delay between chunks
+            if (i + chunkSize < recipients.length) {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+        }
+    },
+};
+
+async function processJob(job: Job) {
+    try {
+        await prisma.job.update({
+            where: { id: job.id },
+            data: {
+                status: JobStatus.PROCESSING,
+                attempts: { increment: 1 },
+            },
+        });
+
+        await jobHandlers[job.type](job.payload);
+
+        // Mark job as completed
+        await prisma.job.update({
+            where: { id: job.id },
+            data: {
+                status: JobStatus.COMPLETED,
+                processedAt: new Date(),
+            },
+        });
+    } catch (error: any) {
+        console.error('Job processing error:', error);
+        // Handle job failure
+        const shouldRetry = job.attempts < job.maxAttempts;
+        await prisma.job.update({
+            where: { id: job.id },
+            data: {
+                status: shouldRetry ? JobStatus.PENDING : JobStatus.FAILED,
+                error: error.message,
+            },
+        });
+    }
+}
+
+export async function processPendingJobs() {
+    const pendingJobs = (await prisma.job.findMany({
+        where: {
+            status: JobStatus.PENDING,
+            attempts: { lt: 3 },
+        },
+        orderBy: { createdAt: 'asc' },
+        take: 10, // Process 10 jobs at a time
+    })) as Job[];
+
+    await Promise.all(pendingJobs.map(processJob));
+
+    return pendingJobs.length;
+}
