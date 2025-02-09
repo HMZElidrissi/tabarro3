@@ -5,6 +5,7 @@ import { validatedActionWithUser } from '@/auth/middleware';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { Role } from '@/types/enums';
+import { queueCampaignNotification } from '@/jobs/helpers';
 
 const CampaignSchema = z.object({
     name: z.string().min(1),
@@ -177,12 +178,14 @@ export const createCampaign = validatedActionWithUser(
                 return { error: 'End time must be after start time' };
             }
 
-            await prisma.campaign.create({
+            const newCampaign = await prisma.campaign.create({
                 data: {
                     ...data,
                     organizationId,
                 },
             });
+
+            await queueCampaignNotification(newCampaign.id);
 
             revalidatePath('/dashboard/campaigns');
             return { success: 'Campaign created successfully' };

@@ -5,6 +5,7 @@ import { validatedActionWithUser } from '@/auth/middleware';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { BloodGroup } from '@/types/enums';
+import { queueBloodRequestNotification } from '@/jobs/helpers';
 
 const ProfileSchema = z.object({
     name: z.string().min(1, 'Name is required'),
@@ -151,13 +152,15 @@ export const createBloodRequest = validatedActionWithUser(
         }
 
         try {
-            await prisma.bloodRequest.create({
+            const newRequest = await prisma.bloodRequest.create({
                 data: {
                     ...data,
                     description: data.description || '',
                     status: 'active',
                 },
             });
+
+            await queueBloodRequestNotification(newRequest.id);
 
             revalidatePath('/profile');
             return { success: 'Blood request created successfully' };
