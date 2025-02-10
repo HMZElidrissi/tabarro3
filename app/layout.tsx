@@ -7,6 +7,7 @@ import { cookies } from 'next/headers';
 import { getDictionary } from '@/i18n/get-dictionary';
 import { i18n } from '@/i18n/i18n-config';
 import { cn } from '@/lib/utils';
+import { Analytics } from '@vercel/analytics/react';
 
 const nunitoFont = Nunito({
     subsets: ['latin'],
@@ -135,6 +136,7 @@ export default async function RootLayout({
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
                 />
             </head>
+            <Analytics />
             <body className="antialiased bg-gray-50">{children}</body>
         </html>
     );
