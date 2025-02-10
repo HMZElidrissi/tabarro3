@@ -21,7 +21,6 @@ const jobHandlers = {
     [JobType.CAMPAIGN_NOTIFICATION]: async (payload: any) => {
         const { campaignId } = payload;
 
-        // Fetch campaign details with relationships
         const campaign = await prisma.campaign.findUnique({
             where: { id: campaignId },
             include: {
@@ -32,7 +31,6 @@ const jobHandlers = {
 
         if (!campaign) throw new Error('Campaign not found');
 
-        // Find recipients in the same region
         const recipients = await prisma.user.findMany({
             where: {
                 role: 'PARTICIPANT',
@@ -42,48 +40,43 @@ const jobHandlers = {
             },
             select: {
                 email: true,
+                name: true, // Include name for personalization if needed
             },
         });
 
-        // Prepare email content
         const startDate = new Date(campaign.startTime);
         const endDate = new Date(campaign.endTime);
 
-        const emailHtml = await render(
-            NearbyCampaignEmail({
-                campaignName: campaign.name,
-                organizationName: campaign.organization.name || undefined,
-                date: startDate.toLocaleDateString('fr-FR'),
-                time: `${startDate.toLocaleTimeString('fr-FR')} - ${endDate.toLocaleTimeString('fr-FR')}`,
-                location: campaign.location,
-                city: campaign.city.name,
-                description: campaign.description,
-            }),
-            { pretty: true },
-        );
+        // Send individual emails to each recipient
+        for (const recipient of recipients) {
+            const emailHtml = await render(
+                NearbyCampaignEmail({
+                    campaignName: campaign.name,
+                    organizationName: campaign.organization.name || undefined,
+                    date: startDate.toLocaleDateString('fr-FR'),
+                    time: `${startDate.toLocaleTimeString('fr-FR')} - ${endDate.toLocaleTimeString('fr-FR')}`,
+                    location: campaign.location,
+                    city: campaign.city.name,
+                    description: campaign.description,
+                }),
+                { pretty: true },
+            );
 
-        // Send emails in chunks of 50
-        const chunkSize = 50;
-        for (let i = 0; i < recipients.length; i += chunkSize) {
-            const chunk = recipients.slice(i, i + chunkSize);
             await transporter.sendMail({
                 from: FROM_EMAIL,
-                bcc: chunk.map(r => r.email),
+                to: recipient.email, // Send to individual recipient
                 subject: `Nouvelle campagne de don de sang à ${campaign.city.name}`,
                 html: emailHtml,
             });
 
-            // Small delay between chunks
-            if (i + chunkSize < recipients.length) {
-                await new Promise(resolve => setTimeout(resolve, 1000));
-            }
+            // Small delay between emails to prevent overwhelming the SMTP server
+            await new Promise(resolve => setTimeout(resolve, 200));
         }
     },
 
     [JobType.BLOOD_REQUEST_NOTIFICATION]: async (payload: any) => {
         const { requestId } = payload;
 
-        // Fetch request details with relationships
         const request = await prisma.bloodRequest.findUnique({
             where: { id: requestId },
             include: {
@@ -93,7 +86,6 @@ const jobHandlers = {
 
         if (!request) throw new Error('Blood request not found');
 
-        // Find recipients in the same region with matching blood group
         const recipients = await prisma.user.findMany({
             where: {
                 role: 'PARTICIPANT',
@@ -104,35 +96,32 @@ const jobHandlers = {
             },
             select: {
                 email: true,
+                name: true,
             },
         });
 
-        const emailHtml = await render(
-            UrgentBloodRequestEmail({
-                bloodGroup: request.bloodGroup,
-                location: request.location,
-                city: request.city.name,
-                phone: request.phone || undefined,
-                description: request.description,
-            }),
-            { pretty: true },
-        );
+        // Send individual emails to each recipient
+        for (const recipient of recipients) {
+            const emailHtml = await render(
+                UrgentBloodRequestEmail({
+                    bloodGroup: request.bloodGroup,
+                    location: request.location,
+                    city: request.city.name,
+                    phone: request.phone || undefined,
+                    description: request.description,
+                }),
+                { pretty: true },
+            );
 
-        // Send emails in chunks of 50
-        const chunkSize = 50;
-        for (let i = 0; i < recipients.length; i += chunkSize) {
-            const chunk = recipients.slice(i, i + chunkSize);
             await transporter.sendMail({
                 from: FROM_EMAIL,
-                bcc: chunk.map(r => r.email),
+                to: recipient.email, // Send to individual recipient
                 subject: `Besoin urgent de sang ${request.bloodGroup} à ${request.city.name}`,
                 html: emailHtml,
             });
 
-            // Small delay between chunks
-            if (i + chunkSize < recipients.length) {
-                await new Promise(resolve => setTimeout(resolve, 1000));
-            }
+            // Small delay between emails to prevent overwhelming the SMTP server
+            await new Promise(resolve => setTimeout(resolve, 200));
         }
     },
 };
