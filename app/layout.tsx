@@ -3,7 +3,7 @@ import { Nunito, Tajawal } from 'next/font/google';
 import './globals.css';
 import { Organization, WithContext } from 'schema-dts';
 import Script from 'next/script';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { getDictionary } from '@/i18n/get-dictionary';
 import { i18n } from '@/i18n/i18n-config';
 import { cn } from '@/lib/utils';
@@ -26,7 +26,22 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://tabarro3.ma';
 
 export async function generateMetadata(): Promise<Metadata> {
     const cookieStore = await cookies();
-    const locale = cookieStore.get('NEXT_LOCALE')?.value || i18n.defaultLocale;
+    const headersList = await headers();
+    const acceptLanguage = headersList.get('accept-language');
+
+    const preferredLocale =
+        acceptLanguage
+            ?.split(',')
+            .map(lang => {
+                const [l, q = '1'] = lang.split(';q=');
+                return { lang: l.split('-')[0], q: parseFloat(q) };
+            })
+            .sort((a, b) => b.q - a.q)
+            .find(({ lang }) => ['fr', 'ar', 'en'].includes(lang))?.lang ||
+        i18n.defaultLocale;
+
+    const locale = cookieStore.get('NEXT_LOCALE')?.value || preferredLocale;
+
     const dictionary = await getDictionary();
 
     return {
