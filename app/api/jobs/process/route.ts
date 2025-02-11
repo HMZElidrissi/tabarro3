@@ -1,20 +1,16 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { processPendingJobs } from '@/jobs/processor';
 
-export async function POST(req: Request) {
+export async function GET(request: NextRequest) {
     try {
-        // Verify the secret token
-        const authHeader = req.headers.get('authorization');
-        const token = authHeader?.split(' ')[1];
+        const authHeader = request.headers.get('authorization');
 
-        if (token !== process.env.CRON_SECRET) {
-            return NextResponse.json(
-                { error: 'Unauthorized' },
-                { status: 401 },
-            );
+        if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+            return new Response('Unauthorized', {
+                status: 401,
+            });
         }
 
-        // Process pending jobs
         const processedCount = await processPendingJobs();
 
         return NextResponse.json({
@@ -29,3 +25,7 @@ export async function POST(req: Request) {
         );
     }
 }
+
+export const config = {
+    maxDuration: 300, // 5 minutes in seconds
+};
