@@ -4,6 +4,8 @@ import { Job, JobType, JobStatus } from '@/types/job';
 import { render } from '@react-email/components';
 import { UrgentBloodRequestEmail } from '@/emails/urgent-blood-request';
 import { NearbyCampaignEmail } from '@/emails/nearby-campaign';
+import { getBloodGroupLabel } from '@/config/blood-group';
+import { BloodGroup } from '@/types/enums';
 
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
@@ -104,7 +106,9 @@ const jobHandlers = {
         for (const recipient of recipients) {
             const emailHtml = await render(
                 UrgentBloodRequestEmail({
-                    bloodGroup: request.bloodGroup,
+                    bloodGroup: getBloodGroupLabel(
+                        request.bloodGroup as BloodGroup,
+                    ),
                     location: request.location,
                     city: request.city.name,
                     phone: request.phone || undefined,
@@ -116,7 +120,7 @@ const jobHandlers = {
             await transporter.sendMail({
                 from: FROM_EMAIL,
                 to: recipient.email, // Send to individual recipient
-                subject: `Besoin urgent de sang ${request.bloodGroup} à ${request.city.name}`,
+                subject: `Besoin urgent de sang ${getBloodGroupLabel(request.bloodGroup as BloodGroup)} à ${request.city.name}`,
                 html: emailHtml,
             });
 
