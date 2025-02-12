@@ -55,6 +55,8 @@
         "jose": "^5.9.6",
         "jspdf": "^2.5.2",
         "jspdf-autotable": "^3.8.4",
+        "leaflet": "^1.9.4",
+        "leaflet.markercluster": "^1.5.3",
         "lru-cache": "^11.0.2",
         "lucide-react": "^0.456.0",
         "nanoid": "^5.0.8",
