@@ -94,7 +94,7 @@ const BloodCentersMap = ({ dict }: { dict: any }) => {
                                 onmouseover="this.style.backgroundColor='#b91c1c'"
                                 onmouseout="this.style.backgroundColor='#dc2626'"
                             >
-                                ${dict?.get_directions || 'Get Directions'}
+                                ${dict?.map.get_directions || 'Get Directions'}
                             </a>
                             <a 
                                 href="${center.googleMapsLink}"
@@ -104,7 +104,7 @@ const BloodCentersMap = ({ dict }: { dict: any }) => {
                                 onmouseover="this.style.backgroundColor='#1d4ed8'"
                                 onmouseout="this.style.backgroundColor='#2563eb'"
                             >
-                                ${dict?.view_on_google_maps || 'View on Google Maps'}
+                                ${dict?.map.view_on_google_maps || 'View on Google Maps'}
                             </a>
                         </div>
                     </div>
@@ -208,14 +208,14 @@ const BloodCentersMap = ({ dict }: { dict: any }) => {
         <div className="py-16 bg-gradient-to-b from-white via-gray-50 to-white">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
                 <h2 className="text-3xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-brand-400 mb-8">
-                    {dict?.map_title || 'Blood Donation Centers'}
+                    {dict?.map.title || 'Blood Donation Centers'}
                 </h2>
 
                 <div className="mb-6">
                     <input
                         type="text"
                         placeholder={
-                            dict?.search_placeholder ||
+                            dict?.map.search_placeholder ||
                             'Search for a blood donation center...'
                         }
                         className="w-full max-w-md mx-auto block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-brand-500 focus:border-brand-500"
@@ -233,7 +233,7 @@ const BloodCentersMap = ({ dict }: { dict: any }) => {
                 </Card>
 
                 <div className="mt-4 text-sm text-gray-600 text-center">
-                    {dict?.legend_text ||
+                    {dict?.map.legend_text ||
                         'Click on a marker to see more information and get directions'}
                 </div>
             </div>
