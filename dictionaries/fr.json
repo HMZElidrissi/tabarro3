@@ -102,6 +102,21 @@
     "legend_text": "Cliquer sur un marqueur pour obtenir plus d'informations",
     "view_on_google_maps": "Voir sur Google Maps"
   },
+  "popup": {
+    "title": "Rejoignez Notre Communauté de Don de Sang",
+    "subtitle": "Faites partie d'un mouvement qui sauve des vies par la sensibilisation et l'action",
+    "features": {
+      "impact": "Avoir un impact significatif dans votre communauté locale",
+      "connect": "Connectez-vous avec les donneurs et les personnes dans le besoin",
+      "notify": "Soyez informé des demandes de don urgentes"
+    },
+    "cta": {
+      "create": "Créer un compte",
+      "member": "Déjà membre ?",
+      "signin": "Se connecter",
+      "later": "Plus tard"
+    }
+  },
   "partners": "Nos partenaires",
   "hero_title": "Donnez du sang, sauvez des vies",
   "hero_description": "Le don de sang est un geste vital qui sauve des vies quotidiennement. Un seul don peut aider jusqu'à trois personnes et est utilisé dans diverses situations médicales, des chirurgies aux traitements contre le cancer. En donnant régulièrement, vous jouez un rôle essentiel dans le maintien d'un approvisionnement en sang suffisant pour votre communauté.",

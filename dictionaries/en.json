@@ -100,6 +100,21 @@
     "legend_text": "Click on a marker to see more information and get directions",
     "view_on_google_maps": "View on Google Maps"
   },
+  "popup": {
+    "title": "Join Our Blood Donation Community",
+    "subtitle": "Be part of a movement that saves lives through awareness and action",
+    "features": {
+      "impact": "Make a meaningful impact in your local community",
+      "connect": "Connect with donors and people in need",
+      "notify": "Get notified about urgent donation requests"
+    },
+    "cta": {
+      "create": "Create Account",
+      "member": "Already a member?",
+      "signin": "Sign in",
+      "later": "Maybe later"
+    }
+  },
   "partners": "Our Partners",
   "hero_title": "Give Blood, Save Lives",
   "hero_description": "Blood donation is a crucial act that saves lives daily. A single donation can help up to three people and is used in various medical situations, from surgeries to cancer treatments. By donating regularly, you play a vital role in maintaining a healthy blood supply for your community.",

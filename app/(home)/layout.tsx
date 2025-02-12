@@ -7,6 +7,7 @@ import { getUser } from '@/auth/session';
 import { getCurrentLanguage } from '@/actions/language';
 import { languages } from '@/config/home';
 import { switchLanguage } from '@/actions/language';
+import SignupInvitation from '@/components/home/signup-invitation';
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -61,6 +62,8 @@ export default async function Layout({ children }: LayoutProps) {
                         </div>
                     </div>
                 </header>
+
+                <SignupInvitation dict={dict.popup} isRTL={isRTL} />
 
                 <main className="flex-1">{children}</main>
 
