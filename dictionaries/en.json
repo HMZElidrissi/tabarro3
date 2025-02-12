@@ -93,11 +93,18 @@
       "description": "Men can donate every three months, and women every four months."
     }
   },
+  "map": {
+    "title": "Map of Regional Blood Transfusion Centers in Morocco!",
+    "get_directions": "Get Directions",
+    "search_placeholder": "Search for a blood donation center...",
+    "legend_text": "Click on a marker to see more information and get directions",
+    "view_on_google_maps": "View on Google Maps"
+  },
+  "partners": "Our Partners",
   "hero_title": "Give Blood, Save Lives",
   "hero_description": "Blood donation is a crucial act that saves lives daily. A single donation can help up to three people and is used in various medical situations, from surgeries to cancer treatments. By donating regularly, you play a vital role in maintaining a healthy blood supply for your community.",
   "donate_button": "Donate Now",
   "carousel_image_alt": "Blood donation image {number}",
-  "map_title": "Map of Regional Blood Transfusion Centers in Morocco!",
   "New_Campaigns": "Blood Donation Campaigns",
   "New_Campaigns_Description": "Join upcoming blood donation campaigns in your area",
   "No_campaigns_found.": "No active campaigns at the moment. Check back later!",

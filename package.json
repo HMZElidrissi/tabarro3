@@ -67,6 +67,7 @@
         "react-chartjs-2": "^5.2.0",
         "react-dom": "19.0.0",
         "react-email": "^3.0.2",
+        "react-fast-marquee": "^1.6.5",
         "react-markdown": "^9.0.1",
         "react-spring": "^9.7.5",
         "recharts": "^2.13.3",
