@@ -66,7 +66,7 @@ export default function Partners({ dict }: { dict: any }) {
                                         alt={partner.name}
                                         width={partner.width}
                                         height={partner.height}
-                                        className={partner.className}
+                                        className={`${partner.className} mx-4`}
                                     />
                                 </div>
                             ))}
