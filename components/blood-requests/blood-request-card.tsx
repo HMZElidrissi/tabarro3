@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { getBloodGroupLabel } from '@/config/blood-group';
 import { getStatusColor } from '@/lib/utils';
+import { BloodGroup } from '@/types/enums';
 
 interface BloodRequestCardProps {
     request: BloodRequest;
@@ -20,11 +21,13 @@ export function BloodRequestCard({ request, dict }: BloodRequestCardProps) {
             <CardContent className="flex-1 pt-6">
                 <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                        <Badge
-                            variant="secondary"
-                            className="bg-brand-100 text-brand-800 hover:bg-brand-200 font-semibold">
-                            {getBloodGroupLabel(request.bloodGroup, dict)}
-                        </Badge>
+                        {request.bloodGroup !== BloodGroup.UNKNOWN && (
+                            <Badge
+                                variant="secondary"
+                                className="bg-brand-100 text-brand-800 hover:bg-brand-200 font-semibold">
+                                {getBloodGroupLabel(request.bloodGroup, dict)}
+                            </Badge>
+                        )}
                         <Badge
                             variant="outline"
                             className={`${getStatusColor(request.status)}`}>
