@@ -24,7 +24,8 @@ export function BloodRequestCard({ request, dict }: BloodRequestCardProps) {
                         {request.bloodGroup !== BloodGroup.UNKNOWN && (
                             <Badge
                                 variant="secondary"
-                                className="bg-brand-100 text-brand-800 hover:bg-brand-200 font-semibold">
+                                className="bg-brand-100 text-brand-800 hover:bg-brand-200 font-semibold"
+                                dir="ltr">
                                 {getBloodGroupLabel(request.bloodGroup, dict)}
                             </Badge>
                         )}
